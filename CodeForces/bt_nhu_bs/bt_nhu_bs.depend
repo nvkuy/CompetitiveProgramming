@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1640163949 source:e:\projects\codeblocks\bt_nhu_bs\main.c
+	<stdio.h>
+	<stdlib.h>
+
