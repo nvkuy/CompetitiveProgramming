@@ -30,9 +30,8 @@ int main()
         s.resize(k + 1);
         for (int i = 1; i <= k; i++) {
             cin >> c;
-            int j;
             s[i].resize(c);
-            while (c--)
+            for (int j = 0; j < c; j++)
                 cin >> s[i][j];
         }
         cout << "? " << n;
@@ -42,7 +41,7 @@ int main()
         cout.flush();
         cin >> am;
         vector<int> ans(k + 1);
-        int l = 1, r = k, m, t1, t2;
+        int l = 1, r = k, m, tmp;
         while (l <= r) {
             if (l == r) {
                 if (l == k) {
