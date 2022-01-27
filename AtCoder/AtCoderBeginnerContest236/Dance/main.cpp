@@ -2,37 +2,47 @@
 
 using namespace std;
 
+vector<vector<int>> a;
+int ans = 0, n;
+
+void dfs(int u, vector<int> b) {
+    if (u == 2 * n) {
+        int tans = 0;
+        for (int i = 1; i <= 2 * n; i++)
+            tans ^= a[i][b[i]];
+        ans = max(ans, tans);
+        return;
+    }
+    if (b[u] >= 0) {
+        dfs(u + 1, b);
+        return;
+    }
+    for (int i = u + 1; i <= 2 * n; i++) {
+        if (b[i] == -1) {
+            b[u] = i;
+            b[i] = u;
+            dfs(u + 1, b);
+            b[u] = -1;
+            b[i] = -1;
+        }
+    }
+}
+
 int main() {
-  ios::sync_with_stdio(false);
-  cin.tie(0);
-  int n;
-  cin >> n;
-  vector<vector<int>> a(2 * n, vector<int>(2 * n));
-  for (int i = 0; i < 2 * n; i++) {
-    for (int j = i + 1; j < 2 * n; j++) {
-      cin >> a[i][j];
+
+    int ai;
+    cin >> n;
+    a.assign(2 * n + 1, vector<int>(2 * n + 1, 0));
+    vector<int> b(2 * n + 1, -1);
+    for (int i = 1; i < 2 * n; i++) {
+        for (int j = i + 1; j <= 2 * n; j++) {
+            cin >> ai;
+            a[i][j] = ai;
+            //a[j][i] = ai;
+        }
     }
-  }
-  vector<bool> used(2 * n, false);
-  int ans = 0;
-  function<void(int)> Dfs = [&](int w) {
-    int i = 0;
-    while (i < 2 * n && used[i]) {
-      ++i;
-    }
-    if (i == 2 * n) {
-      ans = max(ans, w);
-      return;
-    }
-    for (int j = i + 1; j < 2 * n; j++) {
-      if (!used[j]) {
-        used[i] = used[j] = true;
-        Dfs(w ^ a[i][j]);
-        used[i] = used[j] = false;
-      }
-    }
-  };
-  Dfs(0);
-  cout << ans << '\n';
-  return 0;
+    dfs(1, b);
+    cout << ans;
+
+    return 0;
 }
