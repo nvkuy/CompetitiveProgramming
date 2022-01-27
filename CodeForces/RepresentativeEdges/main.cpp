@@ -2,32 +2,48 @@
 
 using namespace std;
 
-int n, a[100];
+vector<int> a;
+int n;
 
-int cal(int d, int s) {
-    int c = 0;
-    for (int i = 0; i < n; i++) {
-        if (a[i] != s)
-            c++;
-        s += d;
+int cal(int si, int d, int l) {
+    int co = 0, j;
+    if (d == 0) {
+        for (int i = 0; i < n; i++)
+            if (a[i] == a[si])
+                co++;
+        return n - co;
     }
-    return c;
+    j = 0;
+    for (int i = si; i < n && i >= 0; i += l) {
+        if (a[i] - a[si] == d * j)
+            co++;
+        j++;
+    }
+    j = 0;
+    for (int i = si; i < n && i >= 0; i -= l) {
+        if (a[si] - a[i] == d * j)
+            co++;
+        j++;
+    }
+    return n - co + 1;
 }
 
 int main()
 {
-    int t, mo, d;
+    int t;
     cin >> t;
     while (t--) {
         cin >> n;
-        mo = n;
+        a.resize(n);
         for (int i = 0; i < n; i++)
             cin >> a[i];
-        for (int i = 0; i < n; i++) {
-            for (int j = -101; j <= 101; j++)
-                mo = min(mo, cal(j, a[i] - (j * i)));
-        }
-        cout << mo << endl;
+        int co = n - 1;
+        for (int i = 0; i < n; i++)
+            co = min(co, cal(i, 0, 1));
+        for (int i = 0; i < n; i++)
+            for (int j = i + 1; j < n; j++)
+                co = min(co, cal(i, a[j] - a[i], j - i));
+        cout << co << endl;
     }
 
     return 0;
