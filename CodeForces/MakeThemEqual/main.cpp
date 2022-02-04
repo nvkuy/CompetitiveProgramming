@@ -2,34 +2,33 @@
 
 using namespace std;
 
+int cost[1001], b[1001], f[1000001];
+
 int main()
 {
-    int t, n;
-    char c;
-    string s;
-    cin >> t;
+    int t, n, k, ai;
+    memset(cost, 0x3f, sizeof(cost));
+    cost[1] = 0;
+    for (int i = 1; i < 1001; i++) {
+        for (int j = 1; j <= i; j++) {
+            if (i + (i / j) < 1001)
+                cost[i + (i / j)] = min(cost[i + (i / j)], cost[i] + 1);
+        }
+    }
+    scanf("%d", &t);
     while (t--) {
-        cin >> n >> c;
-        cin.ignore();
-        getline(cin, s);
-        for (int i = 0; i < s.length(); i++)
-            if (s[i] == c)
-                n--;
-        if (n <= 0) {
-            cout << "0\n";
-            continue;
+        scanf("%d %d", &n, &k);
+        memset(f, 0, (k + 1) * sizeof *f);
+        for (int i = 1; i <= n; i++) {
+            scanf("%d", &b[i]);
+            b[i] = cost[b[i]];
         }
-        n = 0;
-        for (int i = (s.length() / 2); i < s.length(); i++) {
-            if (s[i] == c) {
-                n = i + 1;
-                break;
-            }
+        for (int i = 1; i <= n; i++) {
+            scanf("%d", &ai);
+            for (int j = k; j >= b[i]; j--)
+                f[j] = max(f[j], f[j - b[i]] + ai);
         }
-        if (n > 0)
-            cout << "1\n" << n << '\n';
-        else
-            cout << "2\n" << s.length() - 1 << ' ' << s.length() << '\n';
+        printf("%d\n", f[k]);
     }
 
     return 0;
