@@ -83,10 +83,10 @@ int main()
     for (int i = 0; i < n; i++)
         scanf("%d", &arr[i]);
     SegTree st = SegTree(n);
-    st.build(1, 0, n, arr, n);
+    st.build(arr, n);
     while (m--) {
         scanf("%d %d", &a, &b);
-        printf("%d\n", st.get(1, 0, n, a, b - 1));
+        printf("%d\n", st.get(a, b - 1));
     }
 
     return 0;
