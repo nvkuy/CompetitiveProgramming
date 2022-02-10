@@ -3,32 +3,29 @@
 using namespace std;
 
 vector<vector<int>> c;
-int buds, leafs;
-vector<bool> dd, ddb;
-vector<int> leaves;
+int buds, leaves, lr;
+vector<int> type; //0 - not vis, 1 - visited, 2 - bud, 3 - leaf
 
 void dfs(int u) {
-    dd[u] = true;
-    bool ib = true;
+    type[u] = 1;
+    int ln = 0;
     for (int i = 0; i < c[u].size(); i++) {
-        if (dd[c[u][i]])
-            continue;
-        if (c[c[u][i]].size() == 1) {
-            leaves.push_back(c[u][i]);
-            leafs++;
-        }
-        if ((c[c[u][i]].size() > 1) || (c[u][i] == 1) || (u == 1))
-            ib = false;
-        if (c[c[u][i]].size() > 1)
+        if (type[c[u][i]] == 0)
             dfs(c[u][i]);
-        else
-            dd[c[u][i]] = true;
+        if (type[c[u][i]] == 3)
+            ln++;
     }
-    if (ib) {
+    if (u == 1) {
+        lr += ln;
+        return;
+    }
+    if (ln > 0) {
+        type[u] = 2;
         buds++;
-        ddb[u] = true;
+    } else {
+        type[u] = 3;
+        leaves++;
     }
-    //cout << u << '|' << buds << '|' << leafs << endl;
 }
 
 int main()
@@ -41,24 +38,21 @@ int main()
         cin >> n;
         c.clear();
         c.resize(n + 1);
-        dd.assign(n + 1, false);
-        ddb.assign(n + 1, false);
-        leaves.clear();
-        buds = leafs = 0;
+        type.assign(n + 1, 0);
+        buds = leaves = lr = 0;
         for (int i = 1; i < n; i++) {
             cin >> u >> v;
             c[u].push_back(v);
             c[v].push_back(u);
         }
         dfs(1);
-        //cout << leafs << '|' << buds << endl;
-        for (int i = 0; i < leaves.size(); i++) {
-            if (!ddb[c[leaves[i]][0]]) {
-                buds++;
-                break;
-            }
-        }
-        cout << leafs - buds + 1 << endl;
+        /*
+        for (int i = 1; i <= n; i++)
+            cout << type[i] << ' ';
+        cout << endl;
+        cout << lr << '|' << leaves << '|' << buds << endl;
+        */
+        cout << leaves - (buds - (lr <= 0)) << endl;
     }
 
     return 0;
