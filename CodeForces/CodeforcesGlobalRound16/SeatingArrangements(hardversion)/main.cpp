@@ -2,39 +2,61 @@
 
 using namespace std;
 
+vector<int> sa;
 vector<pair<int, int>> a;
+vector<bool> dd;
 
-bool cmp(pair<int, int> p1, pair<int, int> p2) {
+bool cmp1(pair<int, int> p1, pair<int, int> p2) {
     if (p1.first == p2.first)
-        return p1.second > p2.second;
+        return p1.second < p2.second;
     return p1.first < p2.first;
+}
+
+bool cmp2(pair<int, int> p1, pair<int, int> p2) {
+    return p1.second < p2.second;
 }
 
 int main()
 {
-    int t, n, m, ai;
+    int t, n, m, as, ans;
     cin >> t;
     while (t--) {
         cin >> n >> m;
+        as = m * n;
         a.clear();
-        for (int i = 0; i < m; i++) {
-            cin >> ai;
-            a.push_back(make_pair(ai, i));
+        a.push_back(make_pair(0, 0));
+        sa.resize(as + 1);
+        dd.assign(as + 1, false);
+        for (int i = 1; i <= as; i++) {
+            cin >> sa[i];
+            a.push_back(make_pair(sa[i], i));
         }
-        sort(a.begin(), a.end(), cmp);
-        for (int i = 0; i < m; i++) {
-            a[i].first = i;
-            swap(a[i].first, a[i].second);
-        }
-        sort(a.begin(), a.end());
-        vector<bool> dd(m, false);
-        int ans = 0, co;
-        for (int i = 0; i < m; i++) {
-            co = 0;
-            for (int j = 0; j < a[i].second; j++)
-                co += dd[j];
-            ans += co;
-            dd[a[i].second] = true;
+        ans = 0;
+        sort(a.begin() + 1, a.end(), cmp1);
+        sort(sa.begin() + 1, sa.end());
+        for (int i = 1; i <= as; i += m) {
+            sort(a.begin() + i, a.begin() + i + m, cmp2);
+            //for (int j = i; j < i + m; j++)
+            //    cout << a[j].first << '|' << a[j].second << endl;
+            for (int j = i; j < i + m; j++) {
+                for (int k = i; k < i + m; k++) {
+                    ans += dd[k];
+                    if (sa[k] != a[j].first)
+                        continue;
+                    if (k + 1 < i + m) {
+                        if ((sa[k + 1] == a[j].first) && (!dd[k + 1]))
+                            continue;
+                        else {
+                            //cout << a[j].first << "->" << k << endl;
+                            dd[k] = true;
+                            break;
+                        }
+                    } else {
+                        //cout << a[j].first << "->" << k << endl;
+                        dd[k] = true;
+                    }
+                }
+            }
         }
         cout << ans << endl;
     }
