@@ -2,6 +2,10 @@
 
 using namespace std;
 
+#pragma GCC target ("avx2")
+#pragma GCC optimization ("O3")
+#pragma GCC optimization ("unroll-loops")
+
 int cost[1001], b[1001], f[1000001];
 
 int main()
