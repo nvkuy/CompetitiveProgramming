@@ -4,45 +4,31 @@ using namespace std;
 
 int main()
 {
-    long long t, n;
-    long long k, s;
+
+    int t;
+    long long n, k, s, x, ans;
     cin >> t;
     while (t--) {
         cin >> n >> k;
         vector<long long> a(n);
-        s = 0LL;
+        s = 0LL, ans = 1e18 + 12;
         for (int i = 0; i < n; i++) {
             cin >> a[i];
             s += a[i];
         }
-        if (s <= k) {
-            cout << "0\n";
-            continue;
-        }
         sort(a.begin(), a.end());
-        long long st = 0;
-        long long lm = 0, rm = a[0], mm;
-        while (lm < rm) {
-            if (rm - lm == 1) {
-                if ((rm * n) <= k)
-                    lm = rm;
-                break;
-            }
-            mm = (lm + rm) / 2;
-            if ((mm * n) <= k)
-                lm = mm;
-            else
-                rm = mm - 1;
+        if (n == 1)
+            ans = min(ans, max(s - k, 0LL));
+        s -= k;
+        if (s <= 0)
+            ans = 0LL;
+        for (long long i = n; i > 1; i--) {
+            s += (a[0] - a[i - 1]);
+            x = (s + ((s % (n - i + 2) > 0) * (n - i + 2))) / (n - i + 2);
+            if (x >= 0)
+                ans = min(ans, x + (n - i + 1));
         }
-        st += (a[0] - lm);
-        s -= st;
-        for (int i = a.size() - 1; i > 0; i--) {
-            if (s <= k)
-                break;
-            s -= (a[i] - lm);
-            st++;
-        }
-        cout << st << endl;
+        cout << ans << endl;
     }
 
     return 0;
