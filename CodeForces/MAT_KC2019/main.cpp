@@ -4,6 +4,8 @@ using namespace std;
 
 int main()
 {
+    ios_base::sync_with_stdio(false);
+    cin.tie(0); cout.tie(0);
     long long n, k, ja, ia, m;
     long long ma[101], mi[101][101], mt[101];
     cin >> k >> n >> ia >> ja >> m;

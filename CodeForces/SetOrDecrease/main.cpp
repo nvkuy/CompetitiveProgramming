@@ -4,29 +4,33 @@ using namespace std;
 
 int main()
 {
+    ios_base::sync_with_stdio(false);
+    cin.tie(0); cout.tie(0);
 
-    int t;
-    long long n, k, s, x, ans;
+    int t, n;
+    long long k, ans, s, rd, t1, t2;
     cin >> t;
     while (t--) {
         cin >> n >> k;
-        vector<long long> a(n);
-        s = 0LL, ans = 1e18 + 12;
-        for (int i = 0; i < n; i++) {
+        vector<long long> a(n + 1);
+        ans = 1e18, s = 0LL, rd = 0LL;
+        for (int i = 1; i <= n; i++) {
             cin >> a[i];
             s += a[i];
         }
-        sort(a.begin(), a.end());
-        if (n == 1)
-            ans = min(ans, max(s - k, 0LL));
-        s -= k;
-        if (s <= 0)
-            ans = 0LL;
-        for (long long i = n; i > 1; i--) {
-            s += (a[0] - a[i - 1]);
-            x = (s + ((s % (n - i + 2) > 0) * (n - i + 2))) / (n - i + 2);
-            if (x >= 0)
-                ans = min(ans, x + (n - i + 1));
+        sort(a.begin() + 1, a.end());
+        reverse(a.begin() + 2, a.end());
+        for (int i = 1; i <= n; i++) {
+            rd += (a[i] - a[1]);
+            t2 = i;
+            t1 = (s - rd - k) / t2;
+            if (t1 < 0) {
+                ans = min(ans, t2 - 1);
+                continue;
+            }
+            if ((s - rd - k) > (t1 * t2))
+                t1++;
+            ans = min(ans, t1 + t2 - 1);
         }
         cout << ans << endl;
     }
