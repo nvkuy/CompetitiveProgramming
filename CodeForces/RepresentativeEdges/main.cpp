@@ -2,34 +2,37 @@
 
 using namespace std;
 
+#pragma GCC target ("avx2")
+#pragma GCC optimization ("O3")
+#pragma GCC optimization ("unroll-loops")
+
 vector<int> a;
 int n;
 
-int cal(int si, int d, int l) {
-    int co = 0, j;
-    if (d == 0) {
-        for (int i = 0; i < n; i++)
-            if (a[i] == a[si])
-                co++;
-        return n - co;
-    }
-    j = 0;
-    for (int i = si; i < n && i >= 0; i += l) {
-        if (a[i] - a[si] == d * j)
+int gcd(int a, int b) {
+    if (b == 0)
+        return a;
+    return gcd(b, a % b);
+}
+
+int cal(int i1, int i2) {
+    int diff = a[i2] - a[i1], d = i2 - i1;
+    int rd = gcd(d, abs(diff));
+    d /= rd, diff /= rd;
+    int k = i1 / d, sti = i1 % d, ca = a[i1] - k * diff, co = 0;
+    for (int i = sti; i < n; i += d) {
+        if (a[i] == ca)
             co++;
-        j++;
+        ca += diff;
     }
-    j = 0;
-    for (int i = si; i < n && i >= 0; i -= l) {
-        if (a[si] - a[i] == d * j)
-            co++;
-        j++;
-    }
-    return n - co + 1;
+    return n - co;
 }
 
 int main()
 {
+    ios_base::sync_with_stdio(false);
+    cin.tie(0); cout.tie(0);
+
     int t;
     cin >> t;
     while (t--) {
@@ -37,13 +40,11 @@ int main()
         a.resize(n);
         for (int i = 0; i < n; i++)
             cin >> a[i];
-        int co = n - 1;
-        for (int i = 0; i < n; i++)
-            co = min(co, cal(i, 0, 1));
+        int ans = n - 1;
         for (int i = 0; i < n; i++)
             for (int j = i + 1; j < n; j++)
-                co = min(co, cal(i, a[j] - a[i], j - i));
-        cout << co << endl;
+                ans = min(ans, cal(i, j));
+        cout << ans << endl;
     }
 
     return 0;

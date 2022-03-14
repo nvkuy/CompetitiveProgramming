@@ -2,9 +2,21 @@
 
 using namespace std;
 
-pair<int, int> cp(string s, char c, int n) {
+#pragma GCC target ("avx2")
+#pragma GCC optimization ("O3")
+#pragma GCC optimization ("unroll-loops")
+
+int n;
+string s;
+int cal(char c) {
     int i = 0, j = n - 1;
+    vector<int> dd(n, -1);
     while (i < j) {
+        if (s[i] == s[j] && s[i] == c) {
+            i++;
+            j--;
+            continue;
+        }
         if (s[i] == c) {
             i++;
             continue;
@@ -14,40 +26,50 @@ pair<int, int> cp(string s, char c, int n) {
             continue;
         }
         if (s[i] != s[j])
-            return make_pair(-1, -1);
-        i++; j--;
+            return 1e9 + 7;
+        else {
+            i++;
+            j--;
+        }
     }
-    if (i > j) {
-        i--;
-        j++;
+    //cout << c << '|' << i << '|' << j << endl;
+    while (i < n && j >= 0) {
+        if (s[i] == s[j]) {
+            dd[i] = j;
+            dd[j] = i;
+            i++;
+            j--;
+        } else {
+            if (s[i] == c)
+                i++;
+            else
+                j--;
+        }
     }
-    return make_pair(i + 1, j + 1);
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+        ans += (dd[i] < 0);
+    return ans;
 }
 
 int main()
 {
-    int t, n;
-    string s;
+
+    ios_base::sync_with_stdio(false);
+    cin.tie(0); cout.tie(0);
+
+    int t;
     cin >> t;
     while (t--) {
         cin >> n;
-        vector<vector<int>> a(n + 1, vector<int>(33, 0));
         cin.ignore();
         getline(cin, s);
-        for (int i = 1; i <= n; i++) {
-            for (int j = 0; j <= 'z' - 'a'; j++)
-                a[i][j] = a[i - 1][j];
-            a[i][s[i - 1] - 'a']++;
-            //cout << a[i][0] << '|' << a[i][1] << '|' << a[i][2] << endl;
-        }
         int ans = 1e9 + 7;
         for (char c = 'a'; c <= 'z'; c++) {
-            pair<int, int> p = cp(s, c, n);
-            if (p.first == -1)
-                continue;
-            ans = min(ans, abs(a[p.first][c - 'a'] - (a[n][c - 'a'] - a[p.second][c - 'a'])));
+            ans = min(ans, cal(c));
+            //cout << c << '|' << ans << endl;
         }
-        if (ans >= 1e9)
+        if (ans == 1e9 + 7)
             ans = -1;
         cout << ans << endl;
     }

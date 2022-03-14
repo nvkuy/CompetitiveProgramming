@@ -2,90 +2,51 @@
 
 using namespace std;
 
-int cc(int c, int c1, int c2) {
-    if (c == 2)
-        return c1;
-    else
-        return c1 + c2;
-}
+#pragma GCC target ("avx2")
+#pragma GCC optimization ("O3")
+#pragma GCC optimization ("unroll-loops")
 
 int main()
 {
-    vector<int> ans;
-    int t, n, li, ri, ci;
-    int hi, lo, c1, c2, c3, c4;
+
+    ios_base::sync_with_stdio(false);
+    cin.tie(0); cout.tie(0);
+
+    int t, n, l, r, c;
     cin >> t;
     while (t--) {
-        hi = 0, lo = 1e9 + 7, c1 = 1e9 + 7, c2 = 1e9 + 7, c4 = 1;
         cin >> n;
-        ans.clear();
+        int minL = 1e9 + 7, minR = 1e9 + 7, bestL = 1e9 + 7, bestR = 0, ans = 1e9 + 7, ansL = 1e9 + 7, ansR = 0;
         for (int i = 0; i < n; i++) {
-            cin >> li >> ri >> ci;
-            if ((li == lo && ri >= hi) || (li <= lo && ri == hi)) {
-                if (li == lo && hi == ri) {
-                    if (ci < cc(c4, c1, c2)) {
-                        c4 = 2;
-                        hi = ri;
-                        lo = li;
-                        c1 = c2 = ci;
-                        ans.push_back(cc(c4, c1, c2));
-                        continue;
-                    }
-                } else {
-                    if (ci < cc(c4, c1, c2)) {
-                        c4 = 2;
-                        hi = ri;
-                        lo = li;
-                        c1 = c2 = ci;
-                        ans.push_back(cc(c4, c1, c2));
-                        continue;
-                    }
-                    if (li < lo) {
-                        c4 = 1;
-                        lo = li;
-                        c1 = ci;
-                    } else {
-                        c4 = 1;
-                        hi = ri;
-                        c2 = ci;
-                    }
-                    ans.push_back(cc(c4, c1, c2));
-                    continue;
-                }
+            cin >> l >> r >> c;
+            if (l < bestL) {
+                bestL = l;
+                minL = c;
             }
-            c3 = 0;
-            if (li <= lo) {
-                if (li < lo) {
-                    lo = li;
-                    c1 = ci;
-                    c3++;
-                } else {
-                    if (ci < c1 && c4 == 1) {
-                        lo = li;
-                        c1 = ci;
-                        c3++;
-                    }
-                }
+            if (l == bestL)
+                minL = min(minL, c);
+            if (r > bestR) {
+                bestR = r;
+                minR = c;
             }
-            if (ri >= hi) {
-                if (ri > hi) {
-                    hi = ri;
-                    c2 = ci;
-                    c3++;
-                } else {
-                    if (ci < c2 && c4 == 1) {
-                        hi = ri;
-                        c2 = ci;
-                        c3++;
-                    }
-                }
+            if (r == bestR)
+                minR = min(minR, c);
+            if (l <= ansL && r >= ansR) {
+                if (l < ansL || r > ansR) {
+                    ans = c;
+                    ansL = l;
+                    ansR = r;
+                } else
+                    ans = min(ans, c);
             }
-            if (c3 > 0)
-                c4 = c3;
-            ans.push_back(cc(c4, c1, c2));
+            if (bestL < ansL || bestR > ansR) {
+                ans = minL + minR;
+                ansL = bestL;
+                ansR = bestR;
+            } else
+                ans = min(ans, minL + minR);
+            cout << ans << endl;
         }
-        for (int i = 0; i < ans.size(); i++)
-            cout << ans[i] << endl;
     }
 
     return 0;

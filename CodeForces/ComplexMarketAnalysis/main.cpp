@@ -2,11 +2,17 @@
 
 using namespace std;
 
+#pragma GCC target ("avx2")
+#pragma GCC optimization ("O3")
+#pragma GCC optimization ("unroll-loops")
+
 const int mn = 1e6 + 7;
 bool snt[mn];
 
 int main()
 {
+    ios_base::sync_with_stdio(false);
+    cin.tie(0); cout.tie(0);
 
     memset(snt, true, sizeof(snt));
     snt[0] = false;
@@ -21,47 +27,32 @@ int main()
     cin >> t;
     while (t--) {
         cin >> n >> e;
-        vector<int> a(n + 1), co(n + 1, 0), cpo(n + 1, 0);
-        vector<bool> ia(n + 1, false);
-        vector<long long> f(n + 1);
-        a[0] = 0, f[0] = 0LL;
-        for (int i = 1; i <= n; i++)
+        vector<int> a(n);
+        long long ans = 0LL, cl, cr;
+        for (int i = 0; i < n; i++)
             cin >> a[i];
-        for (int i = 1; i <= n; i++) {
-            f[i] = f[i - 1];
-            if (a[i] == 1) {
-                co[i]++;
-                if (i - e > 0) {
-                    if (a[i - e] == 1) {
-                        co[i] += co[i - e];
-                        if (ia[i - e]) {
-                            f[i]++;
-                            cpo[i] = cpo[i - e];
-                            f[i] += cpo[i];
-                        }
-                    }
-                    if (snt[a[i - e]]) {
-                        ia[i] = true;
-                        f[i]++;
-                        if (i - 2 * e > 0) {
-                            if (a[i - 2 * e] == 1) {
-                                cpo[i] = co[i - 2 * e];
-                                f[i] += cpo[i];
-                            }
-                        }
-                    }
-                }
+        for (int i = 0; i < n; i++) {
+            if (!snt[a[i]])
+                continue;
+            int j;
+            cl = 0, cr = 0;
+            j = i - e;
+            while (j >= 0) {
+                if (a[j] != 1)
+                    break;
+                cl++;
+                j -= e;
             }
-            if (snt[a[i]]) {
-                //f[i]++;
-                if (i - e > 0) {
-                    if (a[i - e] == 1)
-                        f[i] += co[i - e];
-                }
+            j = i + e;
+            while (j < n) {
+                if (a[j] != 1)
+                    break;
+                cr++;
+                j += e;
             }
+            ans += (cr + cl + cr * cl);
         }
-
-        cout << f[n] << endl;
+        cout << ans << endl;
     }
 
     return 0;
