@@ -1,2 +1,2 @@
 # CompetitiveProgramming
-Solved problems and libs|Codeforces: https://codeforces.com/profile/uy842003
+Solved problems and libs|Codeforces: codeforces.com/profile/uy842003
