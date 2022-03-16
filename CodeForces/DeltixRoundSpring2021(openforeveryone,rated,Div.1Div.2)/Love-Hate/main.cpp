@@ -15,9 +15,11 @@ int main()
 
     cin >> n >> m >> p;
     vector<int> co(m, 0), rm;
+    vector<string> a;
     cin.ignore();
     for (int i = 0; i < n; i++) {
         getline(cin, s);
+        a.push_back(s);
         for (int j = 0; j < m; j++)
             if (s[j] == '1')
                 co[j]++;
@@ -26,9 +28,26 @@ int main()
         if (co[i] >= (n / 2) + (n % 2))
             rm.push_back(i);
     }
+    int ans = 0;
+    bitset<20> cans;
     for (int i = 0; i < pow(2LL, rm.size()); i++) {
         bitset<20> sl(i);
-        for (int j = 0; j < rm.size(); j++)
+        bitset<2e5+1> dd(0);
+        for (int j = 0; j < rm.size(); j++) {
+            if (!sl[j])
+                continue;
+            for (int k = 0; k < n; k++) {
+                if (a[k][rm[j]] == '0')
+                    dd[rm[j]] = true;
+            }
+        }
+        if (dd.count() > n / 2)
+            continue;
+        int tans = sl.count();
+        if (tans > ans) {
+            ans = tans;
+            cans = sl;
+        }
     }
 
     return 0;
