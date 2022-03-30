@@ -2,57 +2,71 @@
 
 using namespace std;
 
-long long k, a[2002], ans[2002], an;
+#pragma GCC target ("avx2")
+#pragma GCC optimization ("O3")
+#pragma GCC optimization ("unroll-loops")
+
+long long k;
+vector<int> a, ans;
 
 void cal(long long x) {
-
+    long long tmp = 1, p;
+    for (p = 0; p < a.size(); p++) {
+        if (tmp >= (2e18 / a[p]))
+            break;
+        tmp *= a[p];
+        if (tmp >= x) {
+            tmp /= a[p];
+            break;
+        }
+    }
+    while (x > 1) {
+        ans[p] = max(((x / tmp) + (x % tmp > 0)), 1LL);
+        x -= ((ans[p] - 1LL) * tmp);
+        p--;
+        if (p >= 0)
+            tmp /= a[p];
+    }
 }
 
 int main()
 {
-    int t, n;
-    long long x;
+
+    ios_base::sync_with_stdio(false);
+    cin.tie(0); cout.tie(0);
+
+    int t;
+    long long n, x;
     string s;
     cin >> t;
     while (t--) {
         cin >> n >> k >> x;
         cin.ignore();
         getline(cin, s);
-        an = -1;
-        memset(a, 0, sizeof(a));
-        memset(ans, 0, sizeof(ans));
+        a.clear(); ans.clear();
         for (int i = 0; i < n; i++) {
             if (s[i] != '*')
                 continue;
-            if (i == 0) {
-                an++;
-                a[an]++;
-            } else {
-                if (s[i - 1] != '*')
-                    an++;
-                a[an]++;
-            }
+            if (i == 0 || s[i - 1] != '*')
+                a.push_back(k);
+            else
+                a.back() += k;
         }
-        for (int i = 0; i <= an; i++)
-            a[i] = (a[i] * k) + 1LL;
+        for (int i = 0; i < a.size(); i++)
+            a[i]++;
+        reverse(a.begin(), a.end());
+        ans.assign(a.size(), 1);
         cal(x);
-        int i = 0, j = 0;
-        while (i < n) {
+        for (int i = 0; i < n; i++) {
             if (s[i] != '*') {
-                cout << s[i];
-                i++;
+                cout << 'a';
                 continue;
             }
-            while (s[i] == '*') {
-                i++;
-                if (i == n)
-                    break;
+            if (i == 0 || s[i - 1] != '*') {
+                for (int j = 1; j < ans.back(); j++)
+                    cout << 'b';
+                ans.pop_back();
             }
-            while (ans[j] > 1) {
-                cout << 'b';
-                ans[j]--;
-            }
-            j++;
         }
         cout << endl;
     }
