@@ -11,41 +11,26 @@ int main()
     ios_base::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
 
-    int t, l, r, ans, amax;
+    int t, n, l, r, ai, ans, p2;
     cin >> t;
     while (t--) {
         cin >> l >> r;
-        vector<int> a(r - l + 1);
-        bool hasZero = false;
-        amax = 0, ans = 0;
-        for (int i = 0; i < r - l + 1; i++) {
-            cin >> a[i];
-            amax = max(amax, a[i]);
-            if (a[i] == 0)
-                hasZero = true;
-        }
-        if (!hasZero) {
-            int highBit = 1;
-            while (highBit * 2 <= amax)
-                highBit *= 2;
-            for (int i = 0; i < r - l + 1; i++) {
-                if (a[i] >= highBit)
-                    a[i] ^= highBit;
+        vector<int> initBitCnt(22, 0), finalBitCnt(22, 0);
+        for (int i = l; i <= r; i++) {
+            cin >> ai;
+            bitset<22> bs1(i), bs2(ai);
+            for (int j = 0; j < 22; j++) {
+                initBitCnt[j] += bs1[j];
+                finalBitCnt[j] += bs2[j];
             }
-            ans = highBit;
         }
-        for (int i = 0; i < r - l + 1; i++) {
-            bitset<22> bs(a[i]);
-            if ((bs.count() <= 1) && ((ans & a[i]) == 0))
-                ans += a[i];
+        ans = 0, p2 = 1;
+        for (int i = 0; i < 22; i++) {
+            if (initBitCnt[i] != finalBitCnt[i])
+                ans += p2;
+            p2 *= 2;
         }
         cout << ans << endl;
-        /*
-        cout << "CHECK: ";
-        for (int i = l; i <= r; i++)
-            cout << (i ^ ans) << ' ';
-        cout << endl;
-        */
     }
 
     return 0;

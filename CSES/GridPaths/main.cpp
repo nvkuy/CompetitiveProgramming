@@ -37,7 +37,7 @@ bool canGo(int row, int col) {
 
 bool isStuck(int row, int col) {
     vector<bool> checkStuck(8, false);
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 8; i++) {
         int trow = row, tcol = col;
         go(trow, tcol, mw[i]);
         if (!canGo(trow, tcol))
