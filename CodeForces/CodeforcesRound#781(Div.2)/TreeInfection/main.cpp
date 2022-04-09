@@ -5,6 +5,20 @@ using namespace std;
 #pragma GCC optimize("O3,unroll-loops")
 #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
+vector<int> a;
+
+bool check(int time) {
+    int rm = 0;
+    for (int i = 0; i < a.size(); i++) {
+        if (a[i] > time)
+            rm += (a[i] - time);
+        time--;
+    }
+    if (time >= rm)
+        return true;
+    return false;
+}
+
 int main()
 {
 
@@ -16,50 +30,25 @@ int main()
     while (t--) {
         cin >> n;
         vector<int> cnt(n + 1, 0);
-        priority_queue<int> rm;
+        a.clear();
         for (int i = 1; i < n; i++) {
             cin >> ai;
             cnt[ai]++;
         }
-        for (int i = 1; i <= n; i++) {
+        a.push_back(1);
+        for (int i = 1; i <= n; i++)
             if (cnt[i] > 0)
-                rm.push(cnt[i]);
+                a.push_back(cnt[i]);
+        sort(a.begin(), a.end(), greater<int>());
+        int l = 0, r = n + 1, m;
+        while (l < r) {
+            m = (l + r) / 2;
+            if (check(m))
+                r = m;
+            else
+                l = m + 1;
         }
-        int time = 0, t2;
-        bool needDelRoot = true;
-        vector<int> t1;
-        while (!rm.empty()) {
-            time++;
-            t2 = rm.top();
-            t2 -= rm.size();
-            rm.pop();
-            if (t2 > 0)
-                t1.push_back(t2);
-        }
-        for (int i = 0; i < t1.size(); i++)
-            rm.push(t1[i]);
-        while (!rm.empty()) {
-            t1.clear();
-            time++;
-            if (rm.top() == 1) {
-                needDelRoot = false;
-                break;
-            }
-            t2 = rm.top();
-            t2--;
-            rm.pop();
-            rm.push(t2);
-            while (!rm.empty()) {
-                t2 = rm.top();
-                t2--;
-                rm.pop();
-                if (t2 > 0)
-                    t1.push_back(t2);
-            }
-            for (int i = 0; i < t1.size(); i++)
-                rm.push(t1[i]);
-        }
-        cout << time + needDelRoot << endl;
+        cout << l << endl;
     }
 
     return 0;
