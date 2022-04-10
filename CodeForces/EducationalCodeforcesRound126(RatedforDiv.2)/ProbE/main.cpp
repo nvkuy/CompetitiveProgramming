@@ -6,9 +6,9 @@ using namespace std;
 #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
 int mx[4] = {-1, 0, 0, 1}, my[4] = {0, -1, 1, 0};
-int n, rm;
+int n, rm, lm;
 vector<vector<bool>> c, dd;
-vector<int> seg_r;
+vector<pair<int, int>> con_seg;
 
 bool isOut(int x, int y) {
     if (x < 1 || x > 3 || y < 1 || y > n)
@@ -19,6 +19,7 @@ bool isOut(int x, int y) {
 void dfs(int x, int y) {
     dd[x][y] = true;
     rm = max(rm, y);
+    lm = min(lm, y);
     for (int i = 0; i < 4; i++) {
         int tx = x + mx[i], ty = y + my[i];
         if (!isOut(tx, ty) && !dd[tx][ty] && c[tx][ty])
@@ -32,7 +33,7 @@ int main()
     ios_base::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
 
-    int n, l, r, q;
+    int l, r, q;
     string s;
     cin >> n;
     cin.ignore();
@@ -49,25 +50,21 @@ int main()
         for (int j = 1; j <= n; j++) {
             if (dd[i][j] || !c[i][j])
                 continue;
-            rm = j;
+            //cout << i << '|' << j << endl;
+            rm = j, lm = j;
             dfs(i, j);
-            seg_r.push_back(rm);
+            con_seg.push_back(make_pair(lm, rm));
         }
     }
-    sort(seg_r.begin(), seg_r.end());
-    //cout << "CONS: " << seg_r.size() << endl;
+    //cout << con_seg.size() << endl;
     cin >> q;
     while (q--) {
         cin >> l >> r;
-        int i1 = lower_bound(seg_r.begin(), seg_r.end(), r) - seg_r.begin();
-        int i2 = lower_bound(seg_r.begin(), seg_r.end(), l) - seg_r.begin();
-        if (i1 > seg_r.size() || seg_r[i1] > r)
-            i1--;
-        if (i2 == seg_r.size()) {
-            cout << 0 << endl;
-            continue;
-        }
-        cout << max(i1 - i2 + 1, 0) << endl;
+        int ans = 0;
+        for (int i = 0; i < con_seg.size(); i++)
+            if (max(l, con_seg[i].first) <= min(r, con_seg[i].second))
+                ans++;
+        cout << ans << endl;
     }
 
     return 0;

@@ -6,10 +6,10 @@ using namespace std;
 #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
 long long n;
-vector<long long> h;
+vector<int> h;
 
 bool check(long long day, long long fh) {
-    vector<long long> a = h;
+    vector<int> a = h;
     long long t1 = (day / 2) + (day % 2), t2 = day / 2, t3 = 0, t4;
     for (int i = 0; i < n; i++) {
         t4 = (fh - a[i]) / 2;
@@ -21,7 +21,7 @@ bool check(long long day, long long fh) {
 }
 
 long long minDay(long long fh) {
-    long long l = 0, r = 1e18, m;
+    long long l = 0, r = 1e16, m;
     while (l < r) {
         m = (l + r) / 2;
         if (check(m, fh))
@@ -43,12 +43,12 @@ int main()
     while (t--) {
         cin >> n;
         h.resize(n);
-        long long hmax = 0;
+        int hmax = 0;
         for (int i = 0; i < n; i++) {
             cin >> h[i];
             hmax = max(hmax, h[i]);
         }
-        cout << min(minDay(hmax), min(minDay(hmax + 1), minDay(hmax + 2))) << endl;
+        cout << min(minDay(hmax), minDay(hmax + 1)) << endl;
     }
 
     return 0;
