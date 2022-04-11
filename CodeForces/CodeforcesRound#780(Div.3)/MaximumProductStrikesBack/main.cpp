@@ -25,9 +25,11 @@ pair<int, pair<int, int>> cal(int l, int r) {
         }
     }
     if (numNeg % 2) {
-        if (numTwo(l, firstNeg) > numTwo(lastNeg, r))
-            return make_pair(numTwo(l, lastNeg - 1), make_pair(l, lastNeg - 1));
-        return make_pair(numTwo(firstNeg + 1, r), make_pair(firstNeg + 1, r));
+        int t1 = numTwo(l, lastNeg - 1), t2 = numTwo(firstNeg + 1, r);
+        if (t1 > t2)
+            r = lastNeg - 1;
+        else
+            l = firstNeg + 1;
     }
     return make_pair(numTwo(l, r), make_pair(l, r));
 }
