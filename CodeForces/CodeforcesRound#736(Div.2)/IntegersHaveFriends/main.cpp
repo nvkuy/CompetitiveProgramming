@@ -8,13 +8,13 @@ using namespace std;
 
 void build_tree(vector<long long> &b, vector<long long> &seg_tree, long long l, long long r, long long vertex)
 {
+    if (l >= b.size())
+        return;
 	if (l == r) {
 		seg_tree[vertex] = b[l];
 		return;
 	}
-
 	long long mid = (l + r) / 2LL;
-
 	build_tree(b, seg_tree, l, mid, 2LL * vertex);
 	build_tree(b, seg_tree, mid + 1, r, 2LL * vertex + 1);
 
@@ -31,11 +31,9 @@ long long range_gcd(vector<long long> &seg_tree, long long v, long long tl, long
 	return __gcd(range_gcd(seg_tree, 2LL * v, tl, tm, l, min(tm, r)), range_gcd(seg_tree, 2LL * v + 1, tm + 1, tr, max(tm + 1, l), r));
 }
 
-vector<long long> arr, seg_tree;
-
-long long maxSubarrayLen() {
+long long maxSubarrayLen(vector<long long> &arr) {
     long long n = arr.size();
-	seg_tree.assign(4LL * n + 1, 0LL);
+    vector<long long> seg_tree(4LL * n + 1, 0LL);
 	build_tree(arr, seg_tree, 0LL, n - 1, 1);
 	long long maxLen = 0;
 	long long l = 0, r = 0;
@@ -60,13 +58,13 @@ int main()
     cin >> t;
     while (t--) {
         cin >> n;
-        arr.resize(n);
+        vector<long long> arr(n);
         for (int i = 0; i < n; i++)
             cin >> arr[i];
         for (int i = 0; i < n - 1; i++)
             arr[i] = llabs(arr[i + 1] - arr[i]);
         arr.pop_back();
-        cout << maxSubarrayLen() + 1 << endl;
+        cout << maxSubarrayLen(arr) + 1 << endl;
     }
 
 	return 0;
