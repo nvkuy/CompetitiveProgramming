@@ -51,6 +51,11 @@ int get(int id, int l, int r, int u, int v) {
     return max(get(id * 2, l, mid, u, v), get(id * 2 + 1, mid + 1, r, u, v));
 }
 
+//add k: l->r
+//update(1, 1, n, l, r, k);
+//get max: l->r
+//get(1, 1, n, l, r)
+
 int main()
 {
 
