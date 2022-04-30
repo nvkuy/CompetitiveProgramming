@@ -2,9 +2,12 @@
 
 using namespace std;
 
+#pragma GCC optimize("O3,unroll-loops")
+#pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+
 struct SegTree {
 
-    int SKIP_VALUE = 1e9 + 7;
+    int SKIP_VALUE = 0;
     int ts;
     vector<int> ST;
 
@@ -16,7 +19,7 @@ struct SegTree {
     }
 
     int mergeN(int n1, int n2) {
-        return min(n1, n2);
+        return max(n1, n2);
     }
 
     void build(int id, int l, int r, int *a, int n) {
@@ -57,36 +60,48 @@ struct SegTree {
         update(1, 0, ts, i, v);
     }
 
-    int get(int id, int l, int r, int u, int v) {
-        if (v < l || r < u) {
-            return SKIP_VALUE;
-        }
-        if (u <= l && r <= v) {
-            return ST[id];
-        }
+    int get(int id, int l, int r, int x) {
+        if (l == r)
+            return l;
         int mid = (l + r) / 2;
-        return mergeN(get(id * 2, l, mid, u, v), get(id * 2 + 1, mid + 1, r, u, v));
+        if (ST[id * 2] >= x)
+            return get(id * 2, l, mid, x);
+        if (ST[id * 2 + 1] >= x)
+            return get(id * 2 + 1, mid + 1, r, x);
+        return -1;
     }
 
-    int get(int l, int r) {
-        return get(1, 0, ts, l, r);
+    int get(int x) {
+        return get(1, 0, ts, x);
     }
 
 };
 
-int arr[500005];
+int arr[100001];
 
 int main()
 {
-    int n, m, a, b;
-    scanf("%d %d", &n, &m);
+
+    ios_base::sync_with_stdio(false);
+    cin.tie(0); cout.tie(0);
+
+    int n, m, t, a, b;
+    cin >> n >> m;
     for (int i = 0; i < n; i++)
-        scanf("%d", &arr[i]);
+        cin >> arr[i];
+
     SegTree st = SegTree(n);
     st.build(arr, n);
+
     while (m--) {
-        scanf("%d %d", &a, &b);
-        printf("%d\n", st.get(a, b - 1));
+        cin >> t;
+        if (t == 1) {
+            cin >> a >> b;
+            st.update(a, b);
+        } else {
+            cin >> a;
+            cout << st.get(a) << endl;
+        }
     }
 
     return 0;
