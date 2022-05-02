@@ -5,13 +5,21 @@ using namespace std;
 #pragma GCC optimize("O3,unroll-loops")
 #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
+
 int main()
 {
 
     ios_base::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
 
+    int t, n, m, k;
+    cin >> t;
+    while (t--) {
+        cin >> n >> m >> k;
 
+
+
+    }
 
     return 0;
 }
