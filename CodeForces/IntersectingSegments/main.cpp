@@ -78,20 +78,8 @@ int main()
         }
         int l = nearestPos[a[i]], r = i;
         ans[a[i]] += st.get(l + 1, r - 1);
-        st.update(l, 0);
-    }
-    nearestPos.assign(n + 1, -1);
-    st = SegTree(2 * n);
-    reverse(a.begin(), a.end());
-    for (int i = 0; i < 2 * n; i++) {
-        if (nearestPos[a[i]] < 0) {
-            nearestPos[a[i]] = i;
-            st.update(i, 1);
-            continue;
-        }
-        int l = nearestPos[a[i]], r = i;
-        ans[a[i]] += st.get(l + 1, r - 1);
-        st.update(l, 0);
+        st.update(l, -1);
+        st.update(r, 1);
     }
     for (int i = 1; i <= n; i++)
         cout << ans[i] << ' ';
