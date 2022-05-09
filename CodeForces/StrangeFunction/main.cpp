@@ -15,14 +15,20 @@ long long lcm(long long a, long long b) {
 int main()
 {
     int t;
-    long long n;
-    vector<long long> a;
-    a.push_back(1);
-    for (int i = 2; i <= 100; i++) {
-
-    }
-
+    long long n, curLcm, preLcm, ans, mod = 1e9 + 7;
     cin >> t;
+    while (t--) {
+        cin >> n;
+        preLcm = 1, ans = 0;
+        for (long long i = 2; i < 101; i++) {
+            if (preLcm > n)
+                break;
+            curLcm = lcm(preLcm, i);
+            ans = (ans + (i * (((n / preLcm) - (n / curLcm)) % mod) % mod)) % mod;
+            preLcm = curLcm;
+        }
+        cout << ans << endl;
+    }
 
 
     return 0;

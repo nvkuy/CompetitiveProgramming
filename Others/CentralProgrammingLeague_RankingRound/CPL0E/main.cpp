@@ -30,7 +30,7 @@ void corCompress(vector<int> &a) {
         a[i] = mask[a[i]];
 }
 
-int maxN = 5e5, block_size = 707, tans;
+int block_size, tans;
 vector<int> a, ans, cnt;
 vector<query> qrs;
 
@@ -79,17 +79,17 @@ int main()
     return 0;
     */
 
-    //freopen("test_input.txt", "r", stdin);
-    //freopen("test_output.txt", "w", stdout);
+    freopen("test_input.txt", "r", stdin);
+    freopen("test_output.txt", "w", stdout);
 
     int n, q, l, r;
-    scanf("%d %d", &n, &q);
-    a.resize(n), ans.resize(q), cnt.assign(n + 1, 0);
+    cin >> n >> q;
+    a.resize(n), ans.resize(q), cnt.assign(n + 1, 0), block_size = sqrt(n);
     for (int i = 0;  i < n; i++)
-        scanf("%d", &a[i]);
+        cin >> a[i];
     corCompress(a);
     for (int i = 0; i < q; i++) {
-        scanf("%d %d", &l, &r);
+        cin >> l >> r;
         qrs.push_back(query(l - 1, r - 1, i));
     }
     sort(qrs.begin(), qrs.end(), cmpMo);
@@ -115,7 +115,7 @@ int main()
         ans[cq.id] = tans;
     }
     for (int i = 0; i < q; i++)
-        printf("%d\n", ans[i]);
+        cout << ans[i] << '\n';
 
     return 0;
 }
