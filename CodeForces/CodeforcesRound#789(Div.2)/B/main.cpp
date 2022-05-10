@@ -11,43 +11,36 @@ int main()
     ios_base::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
 
-    int t, n;
+    int t, n, ans;
     string s;
     cin >> t;
     while (t--) {
         cin >> n;
         cin.ignore();
         getline(cin, s);
-        char pre = s[0];
-        int c = 0, ans = 0, cpyans;
-        vector<pair<int, pair<int, int>> seg;
-        for (int i = 0; i < n; i++) {
-            if (s[i] != pre) {
-                seg.push_back({c, {i - c + 1, i});
-                if (c % 2) {
-                    s[i] = pre;
-                    c++;
-                    ans++;
-                } else {
-                    pre = s[i];
-                    c = 1;
-                }
+        ans = 0;
+        vector<vector<int>> f(s.length(), vector<int>(2));
+        for (int i = 0; i < s.length(); i += 2) {
+            if (s[i] != s[i + 1]) {
+                ans++;
+                if (i > 0) {
+                    f[i][0] = min(f[i - 2][0], f[i - 2][1] + 1);
+                    f[i][1] = min(f[i - 2][1], f[i - 2][0] + 1);
+                } else
+                    f[i][0] = f[i][1] = 1;
             } else {
-                c++;
-                if (i + 1 >= n)
-                    seg.push_back({c, {i - c + 1, i});
+                int avai = s[i] - '0';
+                if (i > 0) {
+                    f[i][avai] = min(f[i - 2][avai], f[i - 2][1 - avai] + 1);
+                    f[i][1 - avai] = 1e9;
+                } else {
+                    f[i][avai] = 1;
+                    f[i][1 - avai] = 1e9;
+                }
             }
+            //cout << i << ':' << f[i][0] << ' ' << f[i][1] << endl;
         }
-        cpyans = ans;
-        sort(seg.begin(), seg.end(), greater<int>());
-        while (seg.back().first <= cpyans) {
-            cpyans -= seg.back().first;
-            pair<int, int> tmp = seg.back().second;
-            for (int i = tmp.first; i <= tmp.second; i++)
-                s[i] = (s[i] == '0' ? '1' : '0');
-            seg.pop_back();
-        }
-        cout << ans << ' ' << seg.size() << endl;
+        cout << ans << ' ' << min(f[s.length() - 2][0], f[s.length() - 2][1]) << endl;
     }
 
     return 0;

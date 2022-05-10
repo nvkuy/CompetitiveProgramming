@@ -14,25 +14,12 @@ struct query {
     }
 };
 
-void corCompress(vector<int> &a) {
-    int pre = -1, j = -1;
-    vector<int> b = a;
-    map<int, int> mask;
-    sort(b.begin(), b.end());
-    for (int i = 0; i < b.size(); i++) {
-        if (b[i] == pre)
-            continue;
-        pre = b[i];
-        j++;
-        mask[b[i]] = j;
-    }
-    for (int i = 0; i < a.size(); i++)
-        a[i] = mask[a[i]];
-}
-
 int block_size, tans;
-vector<int> a, ans, cnt;
+vector<int> a, ans;
 vector<query> qrs;
+vector<map<int, int>> cnt_block;
+map<int, int> cnt;
+map<int, int>::iterator it;
 
 bool cmpMo(query q1, query q2) {
     int bid1 = q1.l / block_size, bid2 = q2.l / block_size;
@@ -41,20 +28,30 @@ bool cmpMo(query q1, query q2) {
     return bid1 < bid2;
 }
 
-void add(int i) {
-    if (cnt[a[i]] == 2)
+void add(int val, int num) {
+    if (cnt[val] == 2)
         tans--;
-    if (cnt[a[i]] == 1)
+    if (cnt[val] + num == 2)
         tans++;
-    cnt[a[i]]++;
+    cnt[val] += num;
 }
 
-void del(int i) {
-    if (cnt[a[i]] == 2)
+void del(int val, int num) {
+    if (cnt[val] == 2)
         tans--;
-    if (cnt[a[i]] == 3)
+    if (cnt[val] - num == 2)
         tans++;
-    cnt[a[i]]--;
+    cnt[val] -= num;
+}
+
+void addBlock(int block_id) {
+    for (it = cnt_block[id].begin(); it != cnt_block[i].end(); it++)
+        add(it->first, it->second);
+}
+
+void delBlock(int block_id) {
+    for (it = cnt_block[id].begin(); it != cnt_block[i].end(); it++)
+        del(it->first, it->second);
 }
 
 int main()
@@ -84,10 +81,9 @@ int main()
 
     int n, q, l, r;
     cin >> n >> q;
-    a.resize(n), ans.resize(q), cnt.assign(n + 1, 0), block_size = sqrt(n);
+    a.resize(n), ans.resize(q), cnt.assign(n + 1, 0), block_size = sqrt(n), cnt_block.resize(block_size + 2);
     for (int i = 0;  i < n; i++)
         cin >> a[i];
-    corCompress(a);
     for (int i = 0; i < q; i++) {
         cin >> l >> r;
         qrs.push_back(query(l - 1, r - 1, i));
@@ -97,10 +93,34 @@ int main()
     for (int i = 0; i < qrs.size(); i++) {
         query cq = qrs[i];
         while (r > cq.r) {
-            del(r);
+            if (r / block_size != cq.r / block_size) {
+                while (r % block_size > 0) {
+                    del(a[r], 1);
+                    r--;
+                }
+                while (r / block_size != cq.r / block_size) {
+                    delBlock(r / block_size);
+                    r -= block_size;
+                }
+            }
+            del(a[r], 1);
             r--;
         }
         while (r < cq.r) {
+            if (r / block_size != cq.r / block_size) {
+                while (r % block_size > 0) {
+                    r++;
+                    add(a[r], 1);
+                }
+                while (r / block_size != cq.r / block_size) {
+                    r +=
+                    delBlock(r / block_size);
+                    r -= block_size;
+                }
+            }
+            del(r);
+            r--;
+            //
             r++;
             add(r);
         }
