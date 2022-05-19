@@ -5,21 +5,11 @@ using namespace std;
 #pragma GCC optimize("O3,unroll-loops")
 #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
-struct Node {
-    long long icnt;
-    vector<long long> cnt;
-    Node (int ai) {
-        icnt = 0;
-        cnt.assign(44, 0);
-        cnt[ai]++;
-    }
-};
-
 struct SegTree {
 
-    Node SKIP_VALUE = Node(0);
+    long long SKIP_VALUE = 0;
     int ts;
-    vector<Node> ST;
+    vector<long long> ST;
 
     SegTree(int tsize) {
         ts = 1;
@@ -28,19 +18,8 @@ struct SegTree {
         ST.assign(2 * ts + 2, SKIP_VALUE);
     }
 
-    Node mergeN(Node n1, Node n2) {
-        Node rs = Node(0);
-        long long icnt = 0, tmp = 0;
-        vector<long long> cnt(44, 0);
-        for (int i = 40; i > 0; i--) {
-            icnt += (tmp * n2.cnt[i]);
-            tmp += n1.cnt[i];
-            cnt[i] += (n1.cnt[i] + n2.cnt[i]);
-        }
-        icnt += (n1.icnt + n2.icnt);
-        rs.icnt = icnt;
-        rs.cnt = cnt;
-        return rs;
+    long long mergeN(long long n1, long long n2) {
+        return (n1 | n2);
     }
 
     void build(int id, int l, int r, int *a, int n) {
@@ -49,7 +28,7 @@ struct SegTree {
             return;
         }
         if (l == r) {
-            ST[id] = Node(a[l]);
+            ST[id] = (1LL << a[l]);
             return;
         }
         int mid = (l + r) / 2;
@@ -67,7 +46,7 @@ struct SegTree {
             return ;
         }
         if (l == r) {
-            ST[id] = Node(v);
+            ST[id] = (1LL << v);
             return ;
         }
 
@@ -81,7 +60,7 @@ struct SegTree {
         update(1, 0, ts, i, v);
     }
 
-    Node get(int id, int l, int r, int u, int v) {
+    long long get(int id, int l, int r, int u, int v) {
         if (v < l || r < u) {
             return SKIP_VALUE;
         }
@@ -92,7 +71,7 @@ struct SegTree {
         return mergeN(get(id * 2, l, mid, u, v), get(id * 2 + 1, mid + 1, r, u, v));
     }
 
-    Node get(int l, int r) {
+    long long get(int l, int r) {
         return get(1, 0, ts, l, r);
     }
 
@@ -115,8 +94,9 @@ int main()
     while (q--) {
         cin >> t >> a >> b;
         if (t == 1) {
-            Node ans = st.get(a - 1, b - 1);
-            cout << ans.icnt << endl;
+            long long tmp = st.get(a - 1, b - 1);
+            bitset<44> ans(tmp);
+            cout << ans.count() << endl;
         } else
             st.update(a - 1, b);
     }
