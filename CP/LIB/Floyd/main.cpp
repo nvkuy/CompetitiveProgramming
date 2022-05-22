@@ -30,7 +30,7 @@ vector<int> getPath(int u, int v) {
     do {
         path.push_back(u);
         u = trace[u][v];
-    } while (path.back() != v);
+    } while (u > 0);
     return path;
 }
 
@@ -40,7 +40,7 @@ int main()
     ios_base::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
 
-    int n, m, u, v, q;
+    int m, u, v, q;
     long long cost;
     cin >> n >> m >> q;
     c.assign(n + 1, vector<long long>(n + 1, INF));
