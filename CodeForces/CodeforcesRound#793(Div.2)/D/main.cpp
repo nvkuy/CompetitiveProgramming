@@ -8,7 +8,7 @@ using namespace std;
 int n;
 string s;
 vector<vector<int>> c;
-
+vector<int> lastEvenPos;
 
 int nextNode(int u, int dr) {
     int v = u + dr;
@@ -19,35 +19,67 @@ int nextNode(int u, int dr) {
     return v;
 }
 
-void dfs(int u, int dr) {
+void dfs(int u, int root) {
     if (s[u - 1] == '1')
         return;
-    int v = nextNode(u, dr);
-    if (c[v].size() != 0)
+    int preNode = nextNode(u, -1);
+    if (c[preNode].size() == 0 && preNode != root) {
+        c[u].push_back(preNode);
+        c[preNode].push_back(u);
+        dfs(preNode, root);
         return;
-    c[u].push_back(v);
-    c[v].push_back(u);
-    dfs(v, dr);
+    }
+    int nextOneNode = nextNode(u, 1), nextTwoNode = nextNode(nextOneNode, 1);
+    if (c[nextTwoNode].size() == 0 && nextTwoNode != root && nextTwoNode != u && s[nextOneNode - 1] > s[nextTwoNode - 1]) {
+        int v = lastEvenPos[nextTwoNode];
+        c[u].push_back(v);
+        c[v].push_back(u);
+        dfs(v, root);
+        return;
+    }
+    if (c[nextOneNode].size() == 0 && nextOneNode != root) {
+        c[u].push_back(nextOneNode);
+        c[nextOneNode].push_back(u);
+        dfs(nextOneNode, root);
+        return;
+    }
 }
 
 void makeTree(int root) {
     c.clear();
     c.resize(n + 1);
-    bool hasOddPre = false;
+    lastEvenPos.assign(n + 1, 0);
+    int lastEven = 0;
+    for (int u = nextNode(root, -1); u != root; u = nextNode(u, -1)) {
+        if (s[u - 1] == '1')
+            lastEven = 0;
+        else {
+            if (lastEven == 0)
+                lastEven = u;
+            lastEvenPos[u] = lastEven;
+        }
+    }
+    //make seq 0 0 1
+    bool hasOneBefore = false;
+    for (int u = nextNode(root, 1); u != root; u = nextNode(u, 1)) {
+        if (s[u - 1] == '1')
+            hasOneBefore = true;
+        if (c[u].size() != 0 || s[u - 1] == '1')
+            continue;
+        int ru = u;
+        if (hasOneBefore)
+            ru = lastEvenPos[u];
+        hasOneBefore = false;
+        c[root].push_back(ru);
+        c[ru].push_back(root);
+        dfs(ru, root);
+    }
+    //add remain 1
     for (int u = nextNode(root, 1); u != root; u = nextNode(u, 1)) {
         if (c[u].size() != 0)
             continue;
-        if (s[u - 1] == '1')
-            hasOddPre = true;
-        int dr = 1, v = nextNode(u, dr);
-        if (v != root && s[v - 1] == '2' && hasOddPre)
-            continue;
-        if (hasOddPre)
-            dr = -1;
-        hasOddPre = false;
         c[root].push_back(u);
         c[u].push_back(root);
-        dfs(u, dr);
     }
 }
 
