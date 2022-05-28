@@ -11,15 +11,15 @@ vector<vector<pair<int, long long>>> c;
 vector<long long> dis, trace;
 
 void dijkstra(int st) {
-    priority_queue<pair<int, long long>, vector<pair<int, long long>>, greater<pair<int, long long>>> pq;
+    priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> pq;
     trace.assign(n + 1, -1);
     dis.assign(n + 1, INF);
     dis[st] = 0, trace[st] = st;
-    pq.push(make_pair(st, 0));
+    pq.push(make_pair(0, st));
 
     while (pq.size()) {
-        int u = pq.top().first;
-        long long du = pq.top().second;
+        int u = pq.top().second;
+        long long du = pq.top().first;
         pq.pop();
         if (du != dis[u])
             continue;
@@ -29,7 +29,7 @@ void dijkstra(int st) {
             long long uv = c[u][i].second;
             if (dis[v] > du + uv) {
                 dis[v] = du + uv, trace[v] = u;
-                pq.push(make_pair(v, dis[v]));
+                pq.push(make_pair(dis[v], v));
             }
         }
     }
