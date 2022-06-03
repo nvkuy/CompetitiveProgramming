@@ -166,6 +166,8 @@ int main()
         stPsMin.build(ps, n + 1);
         bool ans = true;
         for (int i = 0; i < n; i++) {
+            if (a[i] <= 0)
+                continue;
             int l = getMaxL(i, stAiMax), r = getMaxR(i, stAiMax);
             long long s1 = stPsMin.get(l, i);
             long long s2 = stPsMax.get(i + 1, r + 1);
