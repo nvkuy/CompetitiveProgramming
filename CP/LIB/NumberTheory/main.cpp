@@ -65,7 +65,7 @@ void facSieve(int n, vector<int> &minPrime) {
     }
 }
 
-vector<int> factorize(int n, vector<int> minPrime) {
+vector<int> factorize(int n, vector<int> &minPrime) {
     vector<int> res;
     while (n != 1) {
         res.push_back(minPrime[n]);
