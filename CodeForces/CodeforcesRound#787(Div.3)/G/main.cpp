@@ -17,25 +17,19 @@ int main()
     for (int i = 0; i < n; i++)
         cin >> a[i];
     reverse(a.begin(), a.end());
-    vector<vector<int>> f(n, vector<int>(m + 1, 1e5));
-    f[0][a[0]] = 0;
-    for (int i = 1; i < n; i++) {
-        for (int j = a[i]; j <= m; j++) {
-            for (int k = 0; k <= m; k++) {
-                int op = j - a[i];
-                if (k - op >= 0 && k - op <= j)
-                    f[i][j] = min(f[i][j], f[i - 1][k - op] + op);
-            }
+    int ans = 0;
+    for (int i = 0; i < n - 1; i++) {
+        m -= a[i];
+        int diff;
+        for (int j = a[i]; j >= -m; j--) {
+            diff = a[i] - j;
+            if (j <= ((diff + m) / (n - i - 1)) && j <= (a[i + 1] + diff))
+                break;
         }
+        a[i] -= diff;
+        a[i + 1] += diff;
+        ans += diff;
     }
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j <= m; j++)
-            cout << f[i][j] << ' ';
-        cout << endl;
-    }
-    int ans = 1e5;
-    for (int i = 0; i <= m; i++)
-        ans = min(ans, f[n - 1][i]);
     cout << ans;
 
     return 0;
