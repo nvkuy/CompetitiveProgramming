@@ -9,6 +9,7 @@ int n, max_val = 0;
 vector<vector<int>> a;
 vector<vector<int>> f;
 vector<vector<int>> dd;
+vector<vector<vector<pair<int, int>>>> mmap;
 
 void corCompress() {
     vector<int> num;
@@ -43,27 +44,11 @@ bool canGo(int x, int y, int curx, int cury) {
 void dfs(int x, int y) {
     int maxMove = 0;
     dd[x][y] = 1;
-    for (int i = 0; i < n; i++) {
-        if (canGo(x + 1, i, x, y)) {
-            if ((dd[x + 1][i] == 0) && (maxMove < (max_val - a[x + 1][i] + 1)))
-                dfs(x + 1, i);
-            maxMove = max(maxMove, f[x + 1][i]);
-        }
-        if (canGo(x - 1, i, x, y)) {
-            if ((dd[x - 1][i] == 0) && (maxMove < (max_val - a[x - 1][i] + 1)))
-                dfs(x - 1, i);
-            maxMove = max(maxMove, f[x - 1][i]);
-        }
-        if (canGo(i, y + 1, x, y)) {
-            if ((dd[i][y + 1] == 0) && (maxMove < (max_val - a[i][y + 1] + 1)))
-                dfs(i, y + 1);
-            maxMove = max(maxMove, f[i][y + 1]);
-        }
-        if (canGo(i, y - 1, x, y)) {
-            if ((dd[i][y - 1] == 0) && (maxMove < (max_val - a[i][y - 1] + 1)))
-                dfs(i, y - 1);
-            maxMove = max(maxMove, f[i][y - 1]);
-        }
+    for (int i = 0; i < mmap[x][y].size(); i++) {
+        pair<int, int> cor = mmap[x][y][i];
+        if (dd[cor.first][cor.second] == 0 && maxMove < (max_val - a[cor.first][cor.second] + 1))
+            dfs(cor.first, cor.second);
+        maxMove = max(maxMove, f[cor.first][cor.second]);
     }
     f[x][y] = maxMove + 1;
 }
@@ -79,10 +64,25 @@ int main()
     a.assign(n, vector<int>(n));
     f.assign(n, vector<int>(n, 0));
     dd.assign(n, vector<int>(n, 0));
+    mmap.assign(n, vector<vector<pair<int, int>>>(n));
     for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
             cin >> a[i][j];
     corCompress();
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            for (int k = 0; k < n; k++) {
+                if (canGo(i + 1, k, i, j))
+                    mmap[i][j].push_back(make_pair(i + 1, k));
+                if (canGo(i - 1, k, i, j))
+                    mmap[i][j].push_back(make_pair(i - 1, k));
+                if (canGo(k, j + 1, i, j))
+                    mmap[i][j].push_back(make_pair(k, j + 1));
+                if (canGo(k, j - 1, i, j))
+                    mmap[i][j].push_back(make_pair(k, j - 1));
+            }
+        }
+    }
     dfs(r - 1, c - 1);
     cout << f[r - 1][c - 1];
 

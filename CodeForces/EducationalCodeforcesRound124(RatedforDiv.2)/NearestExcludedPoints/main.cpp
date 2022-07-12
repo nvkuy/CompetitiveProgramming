@@ -6,33 +6,34 @@ using namespace std;
 #pragma GCC optimization ("O3")
 #pragma GCC optimization ("unroll-loops")
 
-set<string> ps;
+map<long long, pair<int, int>> nearPos;
+set<long long> ps;
 int mx[4] = {-1, 0, 0, 1}, my[4] = {0, -1, 1, 0};
 
-string pts(int x, int y) {
-    string tmp = to_string(x) + '|' + to_string(y);
-    return tmp;
+long long hashFunc(long long x, long long y) {
+    if (x < 0)
+        x = 1e7 - x;
+    if (y < 0)
+        y = 1e7 - y;
+    x += 1e8, y += 1e8;
+    x *= (long long)(1e9);
+    return x + y;
 }
 
-pair<int, int> bfs(int x, int y) {
-    set<string> dd;
-    dd.insert(pts(x, y));
+void bfs(vector<pair<int, int>> &s) {
     queue<pair<int, int>> q;
-    q.push(make_pair(x, y));
+    for (int i = 0; i < s.size(); i++)
+        q.push(s[i]);
     while (!q.empty()) {
-        pair<int, int> u = q.front();
-        //cout << "VIS: " << u.first << ' ' << u.second << endl;
-        q.pop();
-        if (ps.find(pts(u.first, u.second)) == ps.end() && abs(u.first) <= 1e6 && abs(u.second) <= 1e6)
-            return u;
+        pair<int, int> u = q.front(); q.pop();
+        int x = u.first, y = u.second;
+        pair<int, int> ans_u = nearPos[hashFunc(x, y)];
         for (int i = 0; i < 4; i++) {
-            int xt = u.first + mx[i];
-            int yt = u.second + my[i];
-            string tmp = pts(xt, yt);
-            if (dd.find(tmp) == dd.end()) {
-                dd.insert(tmp);
-                q.push(make_pair(xt, yt));
-            }
+            int near_x = x + mx[i], near_y = y + my[i];
+            if (ps.find(hashFunc(near_x, near_y)) == ps.end() || nearPos.find(hashFunc(near_x, near_y)) != nearPos.end())
+                continue;
+            nearPos.insert({hashFunc(near_x, near_y), ans_u});
+            q.push({near_x, near_y});
         }
     }
 }
@@ -42,18 +43,30 @@ int main()
     ios_base::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
 
-    int t, n, x, y;
+    int n, x, y;
     cin >> n;
     vector<pair<int, int>> xys;
-    ps.clear();
+    vector<pair<int, int>> s;
     for (int i = 0; i < n; i++) {
         cin >> x >> y;
         xys.push_back(make_pair(x, y));
-        ps.insert(pts(x, y));
+        ps.insert(hashFunc(x, y));
     }
     for (int i = 0; i < n; i++) {
-        pair<int, int> ans = bfs(xys[i].first, xys[i].second);
-        cout << ans.first << ' ' << ans.second << endl;
+        x = xys[i].first, y = xys[i].second;
+        for (int j = 0; j < 4; j++) {
+            int near_x = x + mx[j], near_y = y + my[j];
+            if (ps.find(hashFunc(near_x, near_y)) == ps.end()) {
+                s.push_back(make_pair(x, y));
+                nearPos.insert({hashFunc(x, y), {near_x, near_y}});
+            }
+        }
+    }
+    bfs(s);
+    for (int i = 0; i < n; i++) {
+        x = xys[i].first, y = xys[i].second;
+        pair<int, int> ans = nearPos[hashFunc(x, y)];
+        cout << ans.first << ' ' << ans.second << '\n';
     }
 
     return 0;

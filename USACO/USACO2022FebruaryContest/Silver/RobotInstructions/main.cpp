@@ -6,7 +6,7 @@ using namespace std;
 #pragma GCC target ("avx,avx2")
 
 vector<pair<int, int>> cors;
-vector<map<string, int>> cnt;
+vector<map<pair<long long, long long>, int>> cnt;
 
 struct pos {
     long long xi, yi;
@@ -15,8 +15,8 @@ struct pos {
         xi = x, yi = y;
         ki = k;
     }
-    string toString() {
-        return to_string(xi) + '|' + to_string(yi);
+    pair<long long, long long> getCor() {
+        return make_pair(xi, yi);
     }
 };
 
@@ -52,13 +52,13 @@ int main()
     bf(min(n / 2 + 1, n - 1), n - 1, b);
     cnt.resize(22);
     for (int i = 0; i < b.size(); i++)
-        cnt[b[i].ki][b[i].toString()]++;
+        cnt[b[i].ki][b[i].getCor()]++;
     for (int i = 1; i <= n; i++) {
         long long ans = 0;
         for (int j = 0; j < a.size(); j++) {
             pos tmp = pos(x - a[j].xi, y - a[j].yi, i - a[j].ki);
             if (tmp.ki >= 0)
-                ans += cnt[tmp.ki][tmp.toString()];
+                ans += cnt[tmp.ki][tmp.getCor()];
         }
         cout << ans << '\n';
     }
