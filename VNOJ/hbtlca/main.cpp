@@ -5,11 +5,11 @@ using namespace std;
 #pragma GCC optimize("O3,unroll-loops")
 #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
-//2^max_h >= n
 const int max_h = 20;
 vector<vector<int>> c;
 vector<vector<int>> up;
 vector<int> depth;
+int root;
 
 void buildBL(int u, int par) {
     up[u][0] = par;
@@ -48,7 +48,6 @@ int getLCA(int u, int v) {
     return u;
 }
 
-//make long long if need
 int dist(int u, int v) {
     int lca = getLCA(u, v);
     return depth[u] + depth[v] - 2 * depth[lca];
@@ -61,19 +60,36 @@ int main()
     cin.tie(0); cout.tie(0);
 
     int n, q, a, b;
-    cin >> n >> q;
-    c.resize(n);
-    depth.assign(n, 0);
-    up.assign(n, vector<int>(max_h));
-    for (int i = 1; i < n; i++) {
-        cin >> a;
-        c[i].push_back(a);
-        c[a].push_back(i);
-    }
-    buildBL(0, 0);
-    while (q--) {
-        cin >> a >> b;
-        cout << getLCA(a, b) << '\n';
+    char t;
+    cin >> n;
+    while (n != 0) {
+        root = 1;
+        c.clear();
+        c.resize(n + 1);
+        depth.assign(n + 1, 0);
+        up.assign(n + 1, vector<int>(max_h));
+        for (int i = 1; i < n; i++) {
+            cin >> a >> b;
+            c[b].push_back(a);
+            c[a].push_back(b);
+        }
+        buildBL(root, root);
+        cin >> q;
+        while (q--) {
+            cin >> t;
+            if (t == '!')
+                cin >> root;
+            else {
+                cin >> a >> b;
+                vector<int> tmp;
+                tmp.push_back(getLCA(a, b));
+                tmp.push_back(getLCA(a, root));
+                tmp.push_back(getLCA(b, root));
+                sort(tmp.begin(), tmp.end());
+                cout << (tmp[0] != tmp[1] ? tmp[0] : tmp[2]) << endl;
+            }
+        }
+        cin >> n;
     }
 
     return 0;
