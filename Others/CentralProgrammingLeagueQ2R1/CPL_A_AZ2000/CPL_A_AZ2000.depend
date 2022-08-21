@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1661075084 source:e:\competitiveprogramming\others\centralprogrammingleagueq2r1\cpl_a_az2000\main.cpp
+	<bits/stdc++.h>
+	<ext/pb_ds/assoc_container.hpp>
+	<ext/pb_ds/tree_policy.hpp>
+
