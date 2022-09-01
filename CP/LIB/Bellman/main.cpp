@@ -76,7 +76,7 @@ vector<int> findNegativeCycle() {
         u = trace[u];
 
     negCycle = vector<int>(1, u);
-    for (int v = trace[u]; v != u; v = trace[u])
+    for (int v = trace[u]; v != u; v = trace[v])
         negCycle.push_back(v);
     reverse(negCycle.begin(), negCycle.end());
 

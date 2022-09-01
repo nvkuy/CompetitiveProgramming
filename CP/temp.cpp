@@ -10,19 +10,11 @@ using namespace __gnu_pbds;
 #pragma GCC optimize("O3,unroll-loops")
 #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
-int bf(int l, int r, string &s) {
-    int st = l + 1;
-    while (l < r && s[l] == s[r])
-        l++, r--;
-    return l - st + 1;
-}
-
 int main()
 {
 
     ios_base::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
-
 
     return 0;
 }

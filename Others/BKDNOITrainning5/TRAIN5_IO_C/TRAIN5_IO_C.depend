@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1661865805 source:e:\competitiveprogramming\others\bkdnoitrainning5\train5_io_c\main.cpp
+	<bits/stdc++.h>
+	<ext/pb_ds/assoc_container.hpp>
+	<ext/pb_ds/tree_policy.hpp>
+
