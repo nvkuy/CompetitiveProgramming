@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1662259760 source:e:\competitiveprogramming\codeforces\codeforcesround#812(div.2)\b\main.cpp
+	<bits/stdc++.h>
+	<ext/pb_ds/assoc_container.hpp>
+	<ext/pb_ds/tree_policy.hpp>
+

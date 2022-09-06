@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1662373019 source:e:\competitiveprogramming\others\compfest14\b\main.cpp
+	<bits/stdc++.h>
+	<ext/pb_ds/assoc_container.hpp>
+	<ext/pb_ds/tree_policy.hpp>
+
