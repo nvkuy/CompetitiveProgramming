@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1662990683 source:e:\competitiveprogramming\others\icpc_train_1\a\main.cpp
+	<bits/stdc++.h>
+	<ext/pb_ds/assoc_container.hpp>
+	<ext/pb_ds/tree_policy.hpp>
+
