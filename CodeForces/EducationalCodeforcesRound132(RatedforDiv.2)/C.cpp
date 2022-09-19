@@ -22,53 +22,39 @@ int main()
     cin.ignore();
     while (t--) {
         getline(cin, s);
-        deque<int> pos;
-        int cs = 0, qc;
+        int open_cnt = 0;
         for (int i = 0; i < s.length(); i++) {
-            if (s[i] == '?')
-                pos.push_back(i);
+            if (s[i] == '(')
+                open_cnt++;
+        }
+        int need_open = (s.length() / 2) - open_cnt;
+        int p1 = -1, p2 = -1;
+        for (int i = 0; i < s.length(); i++) {
+            if (s[i] != '?')
+                continue;
+            if (need_open == 1)
+                p1 = i;
+            if (need_open == 0)
+                p2 = i;
+            if (need_open > 0)
+                s[i] = '(';
             else
-                cs += (s[i] == '(' ? 1 : -1);
+                s[i] = ')';
+            need_open--;
         }
-        if (cs > 0) {
-            for (int i = 0; i < cs; i++) {
-                s[pos.back()] = ')';
-                pos.pop_back();
-            }
-        } else {
-            cs = -cs;
-            for (int i = 0; i < cs; i++) {
-                s[pos.front()] = '(';
-                pos.pop_front();
-            }
-        }
-        qc = 0;
+        if (p1 >= 0 && p2 >= 0)
+            swap(s[p1], s[p2]);
+        // cout << "change to " << s << endl;
+        // cout << p1 << '|' << p2 << endl;
+        int cs = 0, iok = 1;
         for (int i = 0; i < s.length(); i++) {
-            if (s[i] == '?')
-                qc++;
+            cs += (s[i] == '(' ? 1 : -1);
+            if (cs < 0)
+                iok = 0;
         }
-        bool iok = (qc < 4);
-        cs = 0, qc = 0;
-        for (int i = 0; i < s.length(); i++) {
-            if (s[i] == '?')
-                qc++;
-            else
-                cs += (s[i] == '(' ? 1 : -1);
-            if (cs == 0) {
-                if (s[i] == '?' && qc > 1)
-                    qc -= 2;
-            }
-            if (cs < 0 || i + 1 == s.length()) {
-                if (cs < 0)
-                    qc--;
-                else
-                    qc -= cs;
-                if (qc > 1)
-                    iok = false;
-                cs = 0;
-            }
-        }
-        cout << (iok ? "YES" : "NO") << endl;
+        if (p1 < 0 || p2 < 0)
+            iok = 0;
+        cout << ((iok == 0) ? "YES" : "NO") << endl;
     }
 
     return 0;
