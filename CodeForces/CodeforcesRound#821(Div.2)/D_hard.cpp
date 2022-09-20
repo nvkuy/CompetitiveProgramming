@@ -41,7 +41,11 @@ int main()
                 if (s1[i] == s2[i] && s1[j] == s2[j])
                     f[i][j] = min(f[i + 1][j - 1], min(f[i + 1][j], f[i][j - 1]));
                 if (s1[i] != s2[i] && s1[j] != s2[j])
-                    f[i][j] = f[i + 1][j - 1] + y;
+                    f[i][j] = f[i + 1][j - 1] + min(y, (long long)(j - i) * x);
+                if (s1[i] == s2[i] && s1[j] != s2[j])
+                    f[i][j] = f[i + 1][j];
+                if (s1[i] != s2[i] && s1[j] == s2[j])
+                    f[i][j] = f[i][j - 1];
             }
         }
         if (f[0][n - 1] >= 1e18)

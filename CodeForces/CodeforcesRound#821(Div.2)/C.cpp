@@ -21,36 +21,27 @@ int main()
     while (t--) {
         cin >> n;
         vector<int> a(n);
-        set<pair<int, int>> ms;
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++)
             cin >> a[i];
-            ms.insert({a[i], i});
-        }
         vector<pair<int, int>> ans;
-        int r = n - 1;
-        while (r > 0) {
-            auto it = ms.rbegin();
-            pair<int, int> tmp = *it;
-            ms.erase(ms.find(tmp));
-            for (int i = r; i > tmp.second; i--) {
-                if ((a[r] + a[tmp.second]) % 2 == 1) {
-                    ms.erase(ms.find({a[r], r}));
-                    r--;
-                    ans.push_back({tmp.second, r});
-                } else {
-                    int minPos = r;
-                    for (int j = r; j > tmp.second; j--) {
-                        if ((a[tmp.second] + a[j]) % 2 == 0 && a[j] < a[minPos])
-                            minPos = j;
-                    }
-                    ans.push_back({tmp.second, minPos});
-                    a[tmp.second] = a[minPos];
-                    ms.insert({a[tmp.second], tmp.second});
-                    break;
-                }
+        if (a[0] != a[n - 1]) {
+            ans.push_back({0, n - 1});
+            if ((a[0] + a[n - 1]) % 2 == 1)
+                a[n - 1] = a[0];
+            else
+                a[0] = a[n - 1];
+        }
+        for (int i = 1; i + 1 < n; i++) {
+            if ((a[0] + a[i]) % 2 == 1) {
+                ans.push_back({0, i});
+                a[i] = a[0];
             }
-            if (r == tmp.second)
-                r--;
+        }
+        for (int i = n - 1; i >= 0; i--) {
+            if (a[i] == a[0])
+                continue;
+            ans.push_back({i, i + 1});
+            a[i] = a[i + 1];
         }
         cout << ans.size() << endl;
         for (int i = 0; i < ans.size(); i++)
