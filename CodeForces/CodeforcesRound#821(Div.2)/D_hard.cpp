@@ -25,32 +25,28 @@ int main()
         cin.ignore();
         getline(cin, s1);
         getline(cin, s2);
-        vector<vector<long long>> f(n, vector<long long>(n, 1e18));
+        vector<int> diff;
         for (int i = 0; i < n; i++)
-            if (s1[i] == s2[i])
-                f[i][i] = 0;
-        for (int i = 0; i + 1 < n; i++) {
-            if (s1[i] == s2[i] && s1[i + 1] == s2[i + 1])
-                f[i][i + 1] = 0;
-            if (s1[i] != s2[i] && s1[i + 1] != s2[i + 1])
-                f[i][i + 1] = min(x, y * 2);
+            if (s1[i] != s2[i])
+                diff.push_back(i);
+        if (diff.size() % 2 == 1) {
+            cout << -1 << endl;
+            continue;
         }
-        for (int len = 3; len <= n; len++) {
-            for (int i = 0; i + len - 1 < n; i++) {
-                int j = i + len - 1;
-                if (s1[i] == s2[i] && s1[j] == s2[j])
-                    f[i][j] = min(f[i + 1][j - 1], min(f[i + 1][j], f[i][j - 1]));
-                if (s1[i] != s2[i] && s1[j] != s2[j])
-                    f[i][j] = f[i + 1][j - 1] + min(y, (long long)(j - i) * x);
-                if (s1[i] == s2[i] && s1[j] != s2[j])
-                    f[i][j] = f[i + 1][j];
-                if (s1[i] != s2[i] && s1[j] == s2[j])
-                    f[i][j] = f[i][j - 1];
+        vector<long long> f(diff.size() + 1, 1e18);
+        f[0] = 0;
+        for (int i = 1; i <= diff.size(); i++) {
+            if (i % 2) {
+                f[i] = f[i - 1];
+                if (i - 2 > 0)
+                    f[i] = min(f[i], f[i - 2] + (diff[i - 1] - diff[i - 2]) * x);
+            } else {
+                f[i] = f[i - 1] + y;
+                if (i - 2 >= 0)
+                    f[i] = min(f[i], f[i - 2] + (diff[i - 1] - diff[i - 2]) * x);
             }
         }
-        if (f[0][n - 1] >= 1e18)
-            f[0][n - 1] = -1;
-        cout << f[0][n - 1] << endl;
+        cout << f[diff.size()] << endl;
     }
 
     return 0;
