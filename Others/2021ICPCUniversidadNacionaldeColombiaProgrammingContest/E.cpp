@@ -11,23 +11,29 @@ using namespace __gnu_pbds;
 #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
 vector<vector<int>> c;
-vector<long long> dd;
 
-void dfs(int u, int val_par, int par) {
-    int num = c[u].size() / 2;
-    int numLessThan = num;
-    if (val_par < dd[u])
-        numLessThan--;
+void place(int u, int par, int dr) {
+    if (c[u].size() % 2) {
+        cout << u << ' ';
+        for (int v : c[u]) {
+            if (v != par)
+                place(v, u, 1);
+        }
+        return;
+    }
+    int pl = (c[u].size() / 2) - (dr == 1);
+    if (pl == 0)
+        cout << u << ' ';
     for (int v : c[u]) {
         if (v == par)
             continue;
-        if (numLessThan > 0) {
-            numLessThan--;
-            dd[v] = dd[u] - 1;
+        if (pl > 0) {
+            place(v, u, -1);
+            pl--;
+            if (pl == 0)
+                cout << u << ' ';
         } else
-            dd[v] = dd[u] + 1;
-        if (c[v].size() % 2 == 0)
-            dfs(v, dd[u], u);
+            place(v, u, 1);
     }
 }
 
@@ -40,24 +46,12 @@ int main()
     int n, u, v;
     cin >> n;
     c.resize(n);
-    dd.assign(n, 1e9);
     for (int i = 1; i < n; i++) {
         cin >> u >> v;
         c[u].push_back(v);
         c[v].push_back(u);
     }
-    for (int i = 0; i < n; i++) {
-        if (dd[i] < 1e9 || c[i].size() % 2 == 1)
-            continue;
-        dd[i] = 0;
-        dfs(i, 0, -1);
-    }
-    vector<pair<int, int>> tmp;
-    for (int i = 0; i < n; i++)
-        tmp.push_back({dd[i], i});
-    sort(tmp.begin(), tmp.end());
-    for (int i = 0; i < n; i++)
-        cout << tmp[i].second << ' ';
+    place(0, -1, 0);
 
     return 0;
 }

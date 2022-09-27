@@ -10,6 +10,20 @@ using namespace __gnu_pbds;
 #pragma GCC optimize("O3,unroll-loops")
 #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
+vector<int> prefix_function(string s) {
+    int n = (int)s.length();
+    vector<int> pi(n);
+    for (int i = 1; i < n; i++) {
+        int j = pi[i-1];
+        while (j > 0 && s[i] != s[j])
+            j = pi[j-1];
+        if (s[i] == s[j])
+            j++;
+        pi[i] = j;
+    }
+    return pi;
+}
+
 int main()
 {
     
@@ -17,27 +31,16 @@ int main()
     ios_base::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
 
-    freopen("input", "r", stdin);
+    // freopen("input", "r", stdin);
 
     string s;
-    
     while (cin >> s) {
         long long ans = 0;
         for (int i = 0; i < s.length(); i++) {
-            int j = i + 1;
-            while (true) {
-                if (j == s.length())
-                    break;
-                while (j < s.length() && s[i] != s[j])
-                    j++;
-                int tans = 0, k = i;
-                while (j < s.length() && s[k] == s[j]) {
-                    tans++;
-                    ans += tans;
-                    j++, k++;
-                }
-            }
-            
+            string t = s.substr(i);
+            vector<int> pf = prefix_function(t);
+            for (int j = 0; j < pf.size(); j++)
+                ans += pf[j];
         }
         cout << ans << endl;
     }
