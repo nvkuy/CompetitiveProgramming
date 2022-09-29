@@ -17,6 +17,25 @@ inline void debugLocal() {
     freopen("output.txt", "w", stdout);
 }
 
+const int maxS = 505;
+
+int f[maxS][maxS / 2][3], pf[maxS][maxS / 2][3], n, x, m;
+int ps1[maxS], ps2[maxS], ps3[maxS], ps4[maxS];
+
+void copyf() {
+    for (int i = 0; i <= x; i++)
+        for (int j = 0; j <= m; j++)
+            for (int k = 0; k < 3; k++)
+                pf[i][j][k] = f[i][j][k];
+}
+
+void init() {
+    for (int i = 0; i <= x; i++)
+        for (int j = 0; j <= m; j++)
+            for (int k = 0; k < 3; k++)
+                pf[i][j][k] = 0, f[i][j][k] = 0;
+}
+
 int main()
 {
 
@@ -25,38 +44,48 @@ int main()
 
     debugLocal();
 
-    int n, x, m;
-    long long mod = 1e9 + 7;
+    int mod = 1e9 + 7;
     cin >> n >> x >> m;
-    vector<vector<vector<int>>> reset(x, vector<vector<int>>(m + 1, vector<int>(2, 0))), pf = reset, f = reset;
-    for (int i = 0; i < x; i++)
+    if (n < 3 || m * 2 + 1 > n) {
+        cout << 0 << endl;
+        return 0;
+    }
+
+    init();
+    for (int i = 1; i <= x; i++) {
         pf[i][0][0] = 1;
-    for (int i = 1; i < n - 1; i++) {
+        pf[i][0][1] = i - 1;
+        pf[i][0][2] = x - i;
+    }
+    for (int i = 2; i < n; i++) {
         for (int k = 0; k <= m; k++) {
-            long long pspf0 = 0, pspf1 = 0;
-            long long fspf0 = 0, fspf1 = 0;
-            for (int j = 0; j < x; j++) {
-                fspf0 = (fspf0 + pf[j][k][0]) % mod;
-                fspf1 = (fspf1 + pf[j][k][1]) % mod;
-            }
-            for (int j = 0; j < x; j++) {
-                f[j][k][1] = pspf0;
+            memset(ps1, 0, sizeof(ps1));
+            memset(ps2, 0, sizeof(ps2));
+            memset(ps3, 0, sizeof(ps3));
+            memset(ps4, 0, sizeof(ps4));
+            for (int j = 1; j <= x; j++) {
+                ps1[j] = (ps1[j - 1] + pf[j][k][1]) % mod;
+                ps2[j] = (ps2[j - 1] + pf[j][k][2]) % mod;
                 if (k > 0)
-                    pspf0 = (pspf0 + pf[j][k - 1][0]) % mod;
-                pspf1 = (pspf1 + pf[j][k][1]) % mod;
-                f[j][k][0] = fspf0;
-                f[j][k][0] = (long long)(mod + f[j][k][0] + fspf1 - pspf1) % mod;
+                    ps3[j] = (ps3[j - 1] + pf[j][k - 1][1]) % mod;
+                ps4[j] = (ps4[j - 1] + pf[j][k][0]) % mod;
+            }
+            for (int j = 1; j <= x; j++) {
+                f[j][k][0] = (pf[j][k][0] + ((pf[j][k][1] + pf[j][k][2]) % mod)) % mod;
+                f[j][k][2] = (ps2[x] - ps2[j] + mod) % mod;
+                f[j][k][2] = (f[j][k][2] + ((ps4[x] - ps4[j] + mod) % mod)) % mod;
+                f[j][k][2] = (f[j][k][2] + ((ps3[x] - ps3[j] + mod) % mod)) % mod;
+                f[j][k][1] = (ps1[j - 1] + ps2[j - 1]) % mod;
+                f[j][k][1] = (f[j][k][1] + ps4[j - 1]) % mod;
             }
         }
-        pf = f;
-        f = reset;
+        copyf();
     }
-    long long ans = 0;
-    for (int i = 0; i < x; i++) {
-        for (int j = 0; j < x; j++)
-            ans = (ans + pf[i][m][0]) % mod;
-        for (int j = i + 1; j < x; j++)
-            ans = (ans + pf[j][m][1]) % mod;
+    int ans = 0;
+    for (int i = 1; i <= x; i++) {
+        ans = (ans + pf[i][m][0]) % mod;
+        ans = (ans + pf[i][m][1]) % mod;
+        ans = (ans + pf[i][m][2]) % mod;
     }
     cout << ans << endl;
 
