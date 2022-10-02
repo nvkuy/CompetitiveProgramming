@@ -10,20 +10,34 @@ using namespace __gnu_pbds;
 #pragma GCC optimize("O3,unroll-loops")
 #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
+inline void debugLocal() {
+    if (!fopen("input.txt", "r"))
+        return;
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+}
+
+int n;
 vector<vector<int>> c;
-vector<int> dd;
-int ans = 0;
+vector<int> dis;
 
 void dfs(int u, int par) {
     for (int v : c[u]) {
         if (v == par)
             continue;
+        dis[v] = dis[u] + 1;
         dfs(v, u);
-        if (dd[v] == 0 && dd[u] == 0) {
-            dd[v] = 1, dd[u] = 1;
-            ans++;
-        }
     }
+}
+
+int farestFromU(int u) {
+    dis.assign(n, 0);
+    dfs(u, -1);
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+        if (dis[ans] < dis[i])
+            ans = i;
+    return ans;
 }
 
 int main()
@@ -32,18 +46,18 @@ int main()
     ios_base::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
 
-    int n, u, v;
+    debugLocal();
+
+    int u, v;
     cin >> n;
     c.resize(n);
-    dd.assign(n, 0);
     for (int i = 1; i < n; i++) {
         cin >> u >> v;
         u--, v--;
         c[u].push_back(v);
         c[v].push_back(u);
     }
-    dfs(0, -1);
-    cout << ans << endl;
+    cout << dis[farestFromU(farestFromU(0))] << endl;
 
     return 0;
 }
