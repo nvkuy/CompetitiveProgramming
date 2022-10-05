@@ -28,12 +28,7 @@ string hashing(ft &tmp, int k) {
     return rs;
 }
 
-struct gs {
-    int p1, p2, p3;
-};
-
 vector<ft> arr;
-vector<gs> group;
 map<string, int> dd;
 
 int main()
@@ -53,6 +48,7 @@ int main()
         arr.push_back(tmp);
         dd.insert({hashing(tmp, k), i});
     }
+    vector<int> cnt(n, 0);
     for (int i = 0; i < n; i++) {
         for (int j = i + 1; j < n; j++) {
             ft t1;
@@ -65,36 +61,13 @@ int main()
             auto it = dd.find(hashing(t1, k));
             if (it == dd.end() || it->second <= j)
                 continue;
-            group.push_back({i, j, it->second});
+            cnt[i]++, cnt[j]++, cnt[it->second]++;
         }
     }
-    int ans = 0;
-    for (int i = 0; i < group.size(); i++) {
-        for (int j = i + 1; j < group.size(); j++) {
-            set<int> tmp;
-            tmp.insert(group[i].p1);
-            tmp.insert(group[i].p2);
-            tmp.insert(group[i].p3);
-            tmp.insert(group[j].p1);
-            tmp.insert(group[j].p2);
-            tmp.insert(group[j].p3);
-            if (tmp.size() != 5)
-                continue;
-            ans++;
-            // cout << "Match at: ";
-            map<int, int> t1;
-            t1[group[i].p1]++;
-            t1[group[i].p2]++;
-            t1[group[i].p3]++;
-            t1[group[j].p1]++;
-            t1[group[j].p2]++;
-            t1[group[j].p3]++;
-            for (auto t2 : t1)
-                if (t2.second == 2)
-                    cout << t2.first << endl;
-            // cout << group[i].p1 << '|' << group[i].p2 << '|' << group[i].p3 << endl;
-            // cout << group[j].p1 << '|' << group[j].p2 << '|' << group[j].p3 << endl;
-        }
+    long long ans = 0;
+    for (int i = 0; i < n; i++) {
+        long long nn = cnt[i];
+        ans += (nn * (nn - 1)) / 2;
     }
     cout << ans << endl;
 
