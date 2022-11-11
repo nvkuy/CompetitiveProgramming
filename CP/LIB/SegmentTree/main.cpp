@@ -19,7 +19,7 @@ struct SegTree {
         return min(n1, n2);
     }
 
-    void build(int id, int l, int r, int *a, int n) {
+    void build(int id, int l, int r, vector<int> &a, int n) {
         if (l >= n) {
             ST[id] = SKIP_VALUE;
             return;
@@ -34,7 +34,7 @@ struct SegTree {
         ST[id] = mergeN(ST[id * 2], ST[id * 2 + 1]);
     }
 
-    void build(int *a, int n) {
+    void build(vector<int> &a, int n) {
         build(1, 0, ts, a, n);
     }
 
@@ -74,12 +74,11 @@ struct SegTree {
 
 };
 
-int arr[500005];
-
 int main()
 {
     int n, m, a, b;
     scanf("%d %d", &n, &m);
+    vector<int> arr(n);
     for (int i = 0; i < n; i++)
         scanf("%d", &arr[i]);
     SegTree st = SegTree(n);
