@@ -30,6 +30,8 @@ void buildPow(int n) {
 }
 
 void buildHash(const string &s, vector<long long> &pf_hash1, vector<long long> &pf_hash2) {
+    pf_hash1.resize(s.length() + 1);
+    pf_hash2.resize(s.length() + 1);
     pf_hash1[0] = pf_hash2[0] = 0;
     for (int i = 1; i <= s.length(); i++) {
         pf_hash1[i] = (pf_hash1[i - 1] * base + s[i - 1]) % m1;
