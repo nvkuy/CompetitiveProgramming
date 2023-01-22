@@ -10,15 +10,37 @@ using namespace __gnu_pbds;
 #pragma GCC optimize("O3,unroll-loops")
 #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
-bool cmp(pair<int, int> p1, pair<int, int> p2) {
-    int r1 = p1.first + p1.second, r2 = p2.first + p2.second;
-    if (p1.first == p2.first)
-        return r1 < r2;
-    return p1.first < p2.first;
+struct seg {
+    int start, add_more, id;
+};
+
+bool cmp(const seg &seg1, const seg &seg2) {
+    return seg1.start < seg2.start;
 }
 
-int rand_range(int l, int r) {
-    return l + rand() % (r - l + 1);
+int n, k, ans;
+vector<int> max_reach;
+vector<seg> segs;
+
+int cal(int pos) {
+    if (ans != 0)
+        return 0;
+    int reach = segs[pos].start;
+    if (pos == 1) {
+        if (segs[1].id == 1)
+            ans = 1;
+        return reach;
+    }
+    // use seg pos - 1 to populate max reach of seg 1 -> pos - 2 or add more from ans pos - 1 or use start of pos
+    reach = max(reach, min(max(max_reach[pos - 2], cal(pos - 1)), segs[pos].start) + segs[pos].add_more);
+    // cout << segs[pos].id << ' ' << reach << endl;
+    if (segs[pos].id == 1) {
+        if (pos < n) // populate from max -> 1
+            ans = 1;
+        else
+            ans |= (reach >= k);
+    }
+    return reach;
 }
 
 int main()
@@ -27,33 +49,31 @@ int main()
     ios_base::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
 
-    srand(842003);
-
-    int t, n, k;
+    int t;
     cin >> t;
     while (t--) {
         cin >> n >> k;
-        vector<pair<int, int>> arr(n);
-        for (int i = 0; i < n; i++) {
-            cin >> arr[i].first >> arr[i].second;
+        max_reach.assign(n + 1, 0);
+        ans = 0;
+        segs.resize(n + 1);
+        int x, y;
+        for (int i = 1; i <= n; i++) {
+            cin >> x >> y;
+            segs[i] = {x, y, i};
         }
-        if (arr[0].first >= k) {
+        if (segs[1].start >= k) {
             cout << "YES" << endl;
             continue;
         }
-        if (n == 1 || arr[0].first + arr[0].second < k) {
+        if (n == 1 || segs[1].start + segs[1].add_more < k) {
             cout << "NO" << endl;
             continue;
         }
-        sort(arr.begin() + 1, arr.end(), cmp);
-        int p = arr[1].first;
-        for (int i = 2; i < n; i++) {
-            if (p >= arr[i].first)
-                p = max(p, arr[i].first + arr[i].second);
-            else
-                p = max(arr[i].first, p + arr[i].second);
-        }
-        cout << (p >= arr[0].first ? "YES" : "NO") << endl;
+        sort(segs.begin() + 1, segs.end(), cmp);
+        for (int i = 1; i <= n; i++)
+            max_reach[i] = max(max_reach[i - 1], segs[i].start + segs[i].add_more);
+        cal(n);
+        cout << (ans ? "YES" : "NO") << endl;
     }
 
     return 0;
