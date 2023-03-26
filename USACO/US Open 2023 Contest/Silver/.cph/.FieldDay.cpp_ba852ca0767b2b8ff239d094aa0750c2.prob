@@ -1,0 +1,1 @@
+{"name":"Local: FieldDay","url":"e:\\CompetitiveProgramming\\USACO\\US Open 2023 Contest\\Silver\\FieldDay.cpp","tests":[{"id":1679825512862,"input":"5 3\nGHGGH\nGHHHH\nHGHHG","output":"5\n3\n5"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CompetitiveProgramming\\USACO\\US Open 2023 Contest\\Silver\\FieldDay.cpp","group":"local","local":true}
