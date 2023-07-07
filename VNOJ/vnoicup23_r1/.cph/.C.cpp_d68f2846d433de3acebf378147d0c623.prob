@@ -1,0 +1,1 @@
+{"name":"Local: C","url":"e:\\CompetitiveProgramming\\VNOJ\\vnoicup23_r1\\C.cpp","tests":[{"id":1683984695709,"input":"2\n3\n1 4 3\n3 5 2\n2\n4 5\n7 9\n","output":"12\n16\n"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CompetitiveProgramming\\VNOJ\\vnoicup23_r1\\C.cpp","group":"local","local":true}

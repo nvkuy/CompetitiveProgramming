@@ -1,0 +1,1 @@
+{"name":"Local: AmongUs","url":"e:\\CompetitiveProgramming\\USACO\\GraphPractice\\AmongUs.cpp","tests":[{"id":1683269165107,"input":"3\n3 2\n1 1 2\n1 3 2\n2 0\n2 2\n2 1 2\n1 1 2","output":"2\n2\n-1"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CompetitiveProgramming\\USACO\\GraphPractice\\AmongUs.cpp","group":"local","local":true}

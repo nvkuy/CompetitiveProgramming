@@ -1,0 +1,1 @@
+{"name":"Local: EvenOutdegreeEdges","url":"e:\\CompetitiveProgramming\\USACO\\TreePractice\\EvenOutdegreeEdges.cpp","tests":[{"id":1687319269109,"input":"4 4\n1 2\n2 3\n3 4\n1 4","output":"1 4\n3 4\n3 2\n1 2"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CompetitiveProgramming\\USACO\\TreePractice\\EvenOutdegreeEdges.cpp","group":"local","local":true}

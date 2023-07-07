@@ -1,0 +1,1 @@
+{"name":"Local: TrueID","url":"e:\\CompetitiveProgramming\\Others\\CodeTourPractice\\TrueID.cpp","tests":[{"id":1688199835450,"input":"4\n4\n12 9 12 5\n2\n10 10\n4\n3 3 3 3\n5\n1 2 3 4 5","output":"21\n20\n6\n9"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CompetitiveProgramming\\Others\\CodeTourPractice\\TrueID.cpp","group":"local","local":true}

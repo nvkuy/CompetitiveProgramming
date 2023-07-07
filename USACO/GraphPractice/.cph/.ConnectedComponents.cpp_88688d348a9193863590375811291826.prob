@@ -1,0 +1,1 @@
+{"name":"Local: ConnectedComponents","url":"e:\\CompetitiveProgramming\\USACO\\GraphPractice\\ConnectedComponents.cpp","tests":[{"id":1682946893231,"input":"5 5\n1 2\n3 4\n3 2\n4 2\n2 5","output":"2\n1 4"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CompetitiveProgramming\\USACO\\GraphPractice\\ConnectedComponents.cpp","group":"local","local":true}

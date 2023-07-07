@@ -1,0 +1,1 @@
+{"name":"Local: SnowBoots","url":"e:\\CompetitiveProgramming\\USACO\\GraphPractice\\SnowBoots.cpp","tests":[{"id":1686998175956,"input":"10 4\n0 2 8 3 6 7 5 1 4 0\n2 3\n4 2\n3 4\n7 1","output":"2"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CompetitiveProgramming\\USACO\\GraphPractice\\SnowBoots.cpp","group":"local","local":true}

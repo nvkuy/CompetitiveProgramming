@@ -1,0 +1,1 @@
+{"name":"Local: LoadBalancing","url":"e:\\CompetitiveProgramming\\USACO\\BinarySearchPractice\\LoadBalancing.cpp","tests":[{"id":1682561040452,"input":"7\n7 3\n5 5\n7 13\n3 1\n11 7\n5 3\n9 1","output":"2"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CompetitiveProgramming\\USACO\\BinarySearchPractice\\LoadBalancing.cpp","group":"local","local":true}

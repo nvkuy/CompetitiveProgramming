@@ -1,0 +1,1 @@
+{"name":"Local: BitInversions","url":"e:\\CompetitiveProgramming\\CSES\\BitInversions.cpp","tests":[{"id":1681659465590,"input":"001011\n3\n3 2 5","output":"4 2 3\n"},{"id":1681660408329,"input":"1111111111\n2\n1 7","output":"9 5"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CompetitiveProgramming\\CSES\\BitInversions.cpp","group":"local","local":true}

@@ -1,0 +1,1 @@
+{"name":"Local: SocialDistancing","url":"e:\\CompetitiveProgramming\\USACO\\BinarySearchPractice\\SocialDistancing.cpp","tests":[{"id":1682308671829,"input":"5 3\n0 2\n4 7\n9 9","output":"2"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CompetitiveProgramming\\USACO\\BinarySearchPractice\\SocialDistancing.cpp","group":"local","local":true}

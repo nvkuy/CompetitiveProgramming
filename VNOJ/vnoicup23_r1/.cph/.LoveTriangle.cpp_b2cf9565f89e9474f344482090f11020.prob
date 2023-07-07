@@ -1,0 +1,1 @@
+{"name":"Local: LoveTriangle","url":"e:\\CompetitiveProgramming\\VNOJ\\vnoicup23_r1\\LoveTriangle.cpp","tests":[{"id":1683983149932,"input":"2\n5\n4 1 5 2 2\n4\n2 3 4 1\n","output":"<3\n</3\n"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CompetitiveProgramming\\VNOJ\\vnoicup23_r1\\LoveTriangle.cpp","group":"local","local":true}
