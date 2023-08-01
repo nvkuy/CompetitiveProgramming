@@ -1,0 +1,1 @@
+{"name":"Local: D","url":"e:\\CompetitiveProgramming\\CodeForces\\Codeforces Round 884 (Div. 1 + Div. 2)\\D.cpp","tests":[{"id":1689092143052,"input":"4\n4\n2\n1\n6","output":"abca\nab\na\nabcdab"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CompetitiveProgramming\\CodeForces\\Codeforces Round 884 (Div. 1 + Div. 2)\\D.cpp","group":"local","local":true}

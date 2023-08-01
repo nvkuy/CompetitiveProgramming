@@ -1,0 +1,1 @@
+{"name":"Local: PrimeMultiples","url":"e:\\CompetitiveProgramming\\CSES\\PrimeMultiples.py","tests":[{"id":1688957234293,"input":"20 2\n2 5","output":"12"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CompetitiveProgramming\\CSES\\PrimeMultiples.py","group":"local","local":true}

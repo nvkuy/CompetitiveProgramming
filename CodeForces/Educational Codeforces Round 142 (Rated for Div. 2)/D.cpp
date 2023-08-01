@@ -10,35 +10,6 @@ using namespace __gnu_pbds;
 #pragma GCC optimize("O3,unroll-loops")
 #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
-class ttrie {
-  public :
-    struct node {
-        int a[303];
-        int value;
-        int& operator[] (int i){ return a[i%303]; }
-        node() { for (int i=0; i<303; i++) a[i]=0; value=0; }
-    };
-   
-    vector<node> a;
-   
-    int& operator[] (string &s){
-        int pos=0, i, c;
-       
-        for (i=0; c=s[i]; i++)
-        {
-            if (a[pos][c]==0) {
-                a.push_back(node());
-                a[pos][c] = a.size()-1;
-            }
-            pos=a[pos][c];
-        }
-        return a[pos].value;
-    }
-   
-    void clear(){ a.clear(); a.push_back(node()); }
-    ttrie(){ clear(); }
-};
-
 int main()
 {
 
@@ -50,36 +21,32 @@ int main()
     while (t--) {
         int n, m;
         cin >> n >> m;
-        vector<vector<int>> arr(n, vector<int>(m));
-        ttrie tr;
+        map<string, int> f;
+        vector<vector<int>> a;
         for (int i = 0; i < n; i++) {
-            string hashSTR;
-            for (int j = 0; j < m; j++)
-                cin >> arr[i][j];
-            hashSTR += to_string(arr[i][0]);
-            for (int j = 1; j < m; j++)
-                hashSTR += ("|" + arr[i][j]);
-            tr[hashSTR] = i + 1;
+            vector<int> t1(m);
+            vector<pair<int, int>> t2;
+            for (int j = 0; j < m; j++) {
+                cin >> t1[j];
+                t1[j]--;
+                t2.push_back({t1[j], j});
+            }
+            sort(t2.begin(), t2.end());
+            string tmp;
+            for (int j = 0; j < m; j++) {
+                tmp.push_back('0' + t2[j].second);
+                f[tmp] = max(f[tmp], j + 1);
+            }
+            a.push_back(t1);
         }
         for (int i = 0; i < n; i++) {
-            int res = 0;
-            vector<int> tt(m);
-            for (int j = 0; j < m; j++)
-                tt[arr[i][j] - 1] = j + 1;
-            string hashSTR;
-            hashSTR += to_string(tt[0]);
-            int tmp = tr[hashSTR];
-            if (tmp != 0)
-                res = 1;
-            for (int j = 1; j < m; j++) {
-                hashSTR += "|";
-                hashSTR +=  to_string(tt[j]);
-                tmp = tr[hashSTR];
-                if (tmp != 0) res = j + 1;
-                // cout << hashSTR << "->" << tmp << endl;
+            string tmp;
+            int ans = 0;
+            for (int j = 0; j < m; j++) {
+                tmp.push_back('0' + a[i][j]);
+                ans = max(ans, f[tmp]);
             }
-            // cout << hashSTR << endl;
-            cout << res << ' ';
+            cout << ans << ' ';
         }
         cout << endl;
     }

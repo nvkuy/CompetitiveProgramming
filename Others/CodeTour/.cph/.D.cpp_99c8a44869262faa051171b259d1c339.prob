@@ -1,0 +1,1 @@
+{"name":"Local: D","url":"e:\\CompetitiveProgramming\\Others\\CodeTour\\D.cpp","tests":[{"id":1688784082107,"input":"7 0 0\n2 8 1 9 1 -1 8","output":"9"},{"id":1688784087180,"input":"7 1 -1\n2 8 1 9 1 -1 8","output":"25"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CompetitiveProgramming\\Others\\CodeTour\\D.cpp","group":"local","local":true}

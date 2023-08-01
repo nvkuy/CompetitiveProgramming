@@ -1,0 +1,1 @@
+{"name":"Local: A","url":"e:\\CompetitiveProgramming\\Others\\CodeTour\\A.cpp","tests":[{"id":1688782529078,"input":"5\n#0E217A\n#9A8456\n#C0BA06\n#0FA5D4\n#870191\n#0E217F\n#9A845A\n#C0BA0A\n#0FA5D6\n#880197","output":"40.00%"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CompetitiveProgramming\\Others\\CodeTour\\A.cpp","group":"local","local":true}
