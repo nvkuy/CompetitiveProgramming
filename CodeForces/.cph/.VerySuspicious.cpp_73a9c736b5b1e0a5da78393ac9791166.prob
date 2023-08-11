@@ -1,0 +1,1 @@
+{"name":"Local: VerySuspicious","url":"e:\\CompetitiveProgramming\\CodeForces\\VerySuspicious.cpp","tests":[{"id":1691492882146,"input":"4\n1\n2\n3\n4567","output":"2\n2\n3\n83"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CompetitiveProgramming\\CodeForces\\VerySuspicious.cpp","group":"local","local":true}
