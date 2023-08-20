@@ -1,6 +1,41 @@
 #include <bits/stdc++.h>
 
+#define bit_cnt(x) __builtin_popcountll(x)
+
 using namespace std;
+
+vector<int> primes;
+
+long long phi(long long n, long long m) { // count number k that gcd(n, k) == 1 and k <= m
+    vector<int> fac;
+    for (int p : primes) {
+        if (p * p > n) break;
+        if (n % p == 0) {
+            fac.push_back(p);
+            while (n % p == 0) n /= p;
+        }
+    }
+    if (n > 1) fac.push_back(n);
+    int prime_cnt = fac.size();
+    long long cnt = 0;
+    for (int i = 1; i < (1 << prime_cnt); i++) {
+        long long lcm_mask = 1;
+        for (int j = 0; j < prime_cnt; j++) {
+            if ((i >> j) & 1)
+                lcm_mask = min(m + 1, lcm_mask * fac[j]);
+        }
+        cnt += (m / lcm_mask) * (bit_cnt(i) % 2 ? 1 : -1);
+    }
+    return m - cnt;
+}
+
+// count x <= m: gcd(a[i - 1], x) = a[i] 
+// => (a[i - 1] % a[i] == 0 && x % a[i] == 0) 
+// => count x <= m: gcd(a[i - 1] / a[i], x / a[i]) = 1
+long long cal(long long pre_a, long long cur_a, long long m) {
+    if (pre_a % cur_a > 0) return 0;
+    return phi(pre_a / cur_a, m / cur_a);
+}
 
 long long modExpo(long long x, long long n, long long M){
     if(n == 0)
