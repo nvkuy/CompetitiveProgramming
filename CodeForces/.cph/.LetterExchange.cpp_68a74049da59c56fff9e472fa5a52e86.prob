@@ -1,0 +1,1 @@
+{"name":"Local: LetterExchange","url":"e:\\CompetitiveProgramming\\CodeForces\\LetterExchange.cpp","tests":[{"id":1693037401565,"input":"3\n2\nnwi\ninw\n3\ninn\nnww\nwii\n4\nwin\nwww\niii\nnnn\n","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CompetitiveProgramming\\CodeForces\\LetterExchange.cpp","group":"local","local":true}

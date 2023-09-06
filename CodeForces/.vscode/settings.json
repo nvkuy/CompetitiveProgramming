@@ -20,6 +20,9 @@
         "regex": "cpp",
         "valarray": "cpp",
         "tuple": "cpp",
-        "compare": "cpp"
+        "compare": "cpp",
+        "*.tcc": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp"
     }
 }

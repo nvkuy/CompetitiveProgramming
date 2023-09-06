@@ -1,0 +1,1 @@
+{"name":"Local: PowerProduct","url":"e:\\CompetitiveProgramming\\USACO\\MathPractice\\PowerProduct.cpp","tests":[{"id":1693565169643,"input":"6 3\n1 3 9 8 24 1","output":"5"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CompetitiveProgramming\\USACO\\MathPractice\\PowerProduct.cpp","group":"local","local":true}
