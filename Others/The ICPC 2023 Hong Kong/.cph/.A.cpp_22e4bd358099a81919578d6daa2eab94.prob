@@ -1,0 +1,1 @@
+{"name":"Local: A","url":"e:\\CompetitiveProgramming\\Others\\The ICPC 2023 Hong Kong\\A.cpp","tests":[{"id":1694319093448,"input":"7\n1 1 2 2 3 3 4\n7\n? 9\ns 2\n? 4\ns -1\n? 2\ns -5\n? 1","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\CompetitiveProgramming\\Others\\The ICPC 2023 Hong Kong\\A.cpp","group":"local","local":true}
