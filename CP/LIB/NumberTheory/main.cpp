@@ -4,9 +4,21 @@
 
 using namespace std;
 
+// return array cnt_gcd, cnt_gcd[k] = number of pair 1 <= (i, j) <= n that gcd(i, j) = k (nlogn)
+vector<long long> cnt_gcd(int n) {
+    vector<long long> cnt_gcd(n + 1, 0);
+    for (long long i = n; i >= 1; i--) {
+        cnt_gcd[i] = (n / i) * ((n / i) - 1) / 2;
+        for (long long j = 2 * i; j <= n; j += i)
+            cnt_gcd[i] -= cnt_gcd[j];
+    }
+    return cnt_gcd;
+}
+
 vector<int> primes;
 
-long long phi(long long n, long long m) { // count number k that gcd(n, k) == 1 and k <= m
+// count number k that gcd(n, k) == 1 and k <= m
+long long phi(long long n, long long m) {
     vector<int> fac;
     for (int p : primes) {
         if (p * p > n) break;
@@ -27,6 +39,19 @@ long long phi(long long n, long long m) { // count number k that gcd(n, k) == 1 
         cnt += (m / lcm_mask) * (bit_cnt(i) % 2 ? 1 : -1);
     }
     return m - cnt;
+}
+
+int eulerPhi(int n) { // = n (1-1/p1) ... (1-1/pn)
+    if (n == 0) return 0;
+    int ans = n;
+    for (int x = 2; x*x <= n; ++x) {
+        if (n % x == 0) {
+            ans -= ans / x;
+            while (n % x == 0) n /= x;
+        }
+    }
+    if (n > 1) ans -= ans / n;
+    return ans;
 }
 
 // count x <= m: gcd(a[i - 1], x) = a[i] 
