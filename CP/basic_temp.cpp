@@ -10,14 +10,17 @@ using namespace __gnu_pbds;
 #define bit_cnt(x) __builtin_popcountll(x)
 #define low_bit(x) __builtin_ctzll(x)
 
-#pragma GCC optimize("O3,unroll-loops")
-#pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+// #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
 int main()
 {
 
     ios_base::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
+
+    // freopen("input.txt", "r", stdin);
+    // freopen("output.txt", "w", stdout);
 
     
 

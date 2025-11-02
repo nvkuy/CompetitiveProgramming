@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug CP",
+            "type": "lldb-dap",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/solve",
+            "args": [],
+            "stopOnEntry": false,
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "build"
+        }
+    ]
+}
