@@ -9,7 +9,8 @@
             "args": [],
             "stopOnEntry": false,
             "cwd": "${workspaceFolder}",
-            "preLaunchTask": "build"
+            "preLaunchTask": "build",
+            "console": "integratedTerminal"
         }
     ]
 }
